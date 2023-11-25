@@ -136,15 +136,15 @@ function AdminDashboardScreen() {
         <div>
           <ul>
             <li>
-              <Link href="/admin/dashboard" className="font-bold">
-                Panel
+              <Link href="/admin/dashboard">Pánel</Link>
+            </li>
+            <li>
+              <Link href="/admin/dashboard">Consumos</Link>
+            </li>
+            <li>
+              <Link href="/admin/products" className="font-bold">
+                Registros
               </Link>
-            </li>
-            <li>
-              <Link href="/admin/orders">Órdenes</Link>
-            </li>
-            <li>
-              <Link href="/admin/products">Productos</Link>
             </li>
             <li>
               <Link href="/admin/users">Usuarios</Link>

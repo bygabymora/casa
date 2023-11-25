@@ -39,7 +39,7 @@ const postHandler = async (req, res) => {
     paymentType: 'TC Master',
     typeOfPurchase: 'Mercado',
     notes: 'Nada',
-    date: '2023-11-01',
+    date: Date.now(),
   });
 
   const product = await newProduct.save();

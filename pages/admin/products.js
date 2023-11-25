@@ -7,6 +7,8 @@ import Layout from '../../components/Layout';
 import { getError } from '../../utils/error';
 import { BsTrash3 } from 'react-icons/bs';
 import { BiSolidEdit } from 'react-icons/bi';
+import Product from '../../models/Product';
+import db from '../../utils/db.js';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -104,14 +106,14 @@ export default function AdminProdcutsScreen() {
         <div>
           <ul>
             <li>
-              <Link href="/admin/dashboard">Pánel</Link>
+              <Link href="/">Pánel</Link>
             </li>
             <li>
-              <Link href="/admin/orders">Órdenes</Link>
+              <Link href="/">Consumos</Link>
             </li>
             <li>
               <Link href="/admin/products" className="font-bold">
-                Productos
+                Registros
               </Link>
             </li>
             <li>
@@ -121,14 +123,14 @@ export default function AdminProdcutsScreen() {
         </div>
         <div className="overflow-x-auto md:col-span-3">
           <div className="flex justify-between">
-            <h1 className="mb-4 text-xl">Productos</h1>
+            <h1 className="mb-4 text-xl">Registros</h1>
             {loadingDelete && <div>Borrando item...</div>}
             <button
               disabled={loadingCreate}
               onClick={createHandler}
               className="primary-button"
             >
-              {loadingCreate ? 'Loading' : 'Create'}
+              {loadingCreate ? 'Loading' : 'Crear'}
             </button>
           </div>
           {loading ? (
@@ -145,8 +147,11 @@ export default function AdminProdcutsScreen() {
                       NOMBRE
                     </th>
                     <th className="p-2 text-left">VALOR</th>
-                    <th className="p-2 text-left  border-r border-gray-300">
+                    <th className="p-2 text-left hidden lg:block ">
                       TIPO DE PAGO
+                    </th>
+                    <th className="p-2 text-left hidden lg:block border-r border-gray-300">
+                      FECHA
                     </th>
 
                     <th className="p-2 text-left">ACCIONES</th>
@@ -161,24 +166,27 @@ export default function AdminProdcutsScreen() {
                       <td className=" p-2 ">
                         ${formatNumberWithDots(product.value)}
                       </td>
-                      <td className=" p-2 border-r border-gray-300">
+                      <td className=" p-2 hidden lg:block ">
                         {product.paymentType}
                       </td>
+                      <td className=" p-2 border-r border-gray-300 hidden lg:block">
+                        {product.date.substring(0, 10)}
+                      </td>
 
-                      <td className=" p-5 text-center flex flex-row">
+                      <td className=" p-5 text-center flex flex-col lg:flex-row">
                         <button
                           onClick={() =>
                             router.push(`/admin/product/${product._id}`)
                           }
                           type="button"
-                          className="primary-button font-bold underline "
+                          className="primary-button font-bold underline  self-center "
                         >
                           <BiSolidEdit />
                         </button>
                         &nbsp;
                         <button
                           onClick={() => deleteHandler(product._id)}
-                          className="primary-button font-bold underline"
+                          className="primary-button font-bold underline self-center"
                           type="button"
                         >
                           <BsTrash3 />
@@ -194,4 +202,26 @@ export default function AdminProdcutsScreen() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  await db.connect();
+
+  const products = await Product.find().sort({ createdAt: -1 }).lean();
+  const serializableProducts = products.map((product) => {
+    // Convert all Date objects to strings
+    Object.keys(product).forEach((key) => {
+      if (product[key] instanceof Date) {
+        product[key] = product[key].toISOString();
+      }
+    });
+    // Convert Mongoose documents to plain objects
+    return db.convertDocToObj(product);
+  });
+
+  return {
+    props: {
+      products: serializableProducts,
+    },
+  };
 }
