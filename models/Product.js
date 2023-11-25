@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
     paymentType: { type: String, required: true },
     typeOfPurchase: { type: String, required: true },
     notes: { type: String, required: false },
-    date: { type: Date, default: Date.now, required: true },
+    date: { type: Date, required: true },
   },
   {
     timestamps: true,

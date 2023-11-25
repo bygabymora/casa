@@ -67,14 +67,8 @@ export default function AdminProductEditScreen() {
         setValue('paymentType', data.paymentType);
         setValue('typeOfPurchase', data.typeOfPurchase);
         setValue('notes', data.notes);
-
-        const existingDate = data.date;
-        if (!existingDate) {
-          const currentDate = new Date().toISOString().split('T')[0];
-          setValue('date', currentDate);
-        } else {
-          setValue('date', existingDate);
-        }
+        const existingDate = data.date.toISOString().split('T')[0];
+        setValue('date', existingDate);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -97,6 +91,7 @@ export default function AdminProductEditScreen() {
   }) => {
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
+      const dateObject = new Date(date);
       await axios.put(`/api/admin/products/${productId}`, {
         name,
         slug,
@@ -105,7 +100,7 @@ export default function AdminProductEditScreen() {
         paymentType,
         typeOfPurchase,
         notes,
-        date,
+        date: dateObject,
       });
       dispatch({ type: 'UPDATE_SUCCESS' });
       toast.success('Product updated successfully');
