@@ -1,78 +1,87 @@
 import Layout from '../components/Layout.js';
-import { ProductItem } from '../components/ProductItem.js';
-import React from 'react';
-import Banner from '../components/Banner';
-import Contact from '../components/contact/Contact';
-import StaticBanner from '../components/StaticBanner';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Product from '../models/Product.js';
 import db from '../utils/db.js';
-import Testimonios from '../components/Testimonios.js';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import React, { useEffect, useReducer } from 'react';
+import { toast } from 'react-toastify';
+import { getError } from '../utils/error.js';
+import Link from 'next/link.js';
 
-export default function Home({ products }) {
-  const [carouselCenterSlidePercentage, setCarouselCenterSlidePercentage] =
-    React.useState(33.33); // Set a default value for initial rendering
+function reducer(state, action) {
+  switch (action.type) {
+    case 'CREATE_REQUEST':
+      return { ...state, loadingCreate: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loadingCreate: false };
+    case 'CREATE_FAIL':
+      return { ...state, loadingCreate: false };
 
-  React.useEffect(() => {
-    const handleResize = () => {
-      // Calculate the centerSlidePercentage based on the window size
-      if (window.innerWidth < 768) {
-        // Small screens, show one item at a time
-        setCarouselCenterSlidePercentage(100);
-      } else if (window.innerWidth < 1024) {
-        // Medium screens, show two items at a time
-        setCarouselCenterSlidePercentage(50);
-      } else {
-        // Larger screens, show three items at a time
-        setCarouselCenterSlidePercentage(33.33);
+    default:
+      return state;
+  }
+}
+
+export default function Home() {
+  const router = useRouter();
+
+  const [{ loadingCreate, successDelete }, dispatch] = useReducer(reducer, {
+    loading: true,
+    products: [],
+    error: '',
+    loadingCreate: false,
+  });
+
+  const createHandler = async () => {
+    if (!window.confirm('ESTÁ SEGURO?')) {
+      return;
+    }
+    try {
+      dispatch({ type: 'CREATE_REQUEST' });
+      const { data } = await axios.post(`/api/admin/products`);
+      dispatch({ type: 'CREATE_SUCCESS' });
+      toast.success('PRODUCTO CREADO EXITOSAMENTE');
+      router.push(`/admin/product/${data.product._id}`);
+    } catch (err) {
+      dispatch({ type: 'CREATE_FAIL' });
+      toast.error(getError(err));
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/admin/products`);
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
 
-    handleResize(); // Call the handleResize function on initial load
-
-    // Add a window resize event listener
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else {
+      fetchData();
+    }
+  }, [successDelete]);
 
   return (
     <Layout title="Home Page">
-      <StaticBanner />
-      <Banner />
-
-      <h2 className="section__title my-2" id="productos">
-        Nuestros Productos
-      </h2>
-      <div>
-        <p className="text-center text-sm md:text-lg">
-          ¡Escoje los sujetadores que más se adapten a ti!
-        </p>
+      <div className="flex flex-col items-center justify-center h-screen gap-10">
+        <button
+          disabled={loadingCreate}
+          onClick={createHandler}
+          className="primary-button align-middle  w-[70%]"
+        >
+          {loadingCreate ? 'Loading' : 'Crear Registro'}
+        </button>
+        <Link
+          href="/admin/dashboard"
+          className="primary-button align-middle text-center w-[70%]"
+        >
+          Dashboard
+        </Link>
       </div>
-      <Carousel
-        showArrows={true}
-        showThumbs={false}
-        showStatus={false}
-        showIndicators={false}
-        infiniteLoop={true}
-        centerMode={true}
-        centerSlidePercentage={carouselCenterSlidePercentage}
-        emulateTouch={true}
-        swipeable={true}
-        autoPlay={true}
-        interval={1500}
-      >
-        {products.map((product) => (
-          <ProductItem product={product} key={product.slug}></ProductItem>
-        ))}
-      </Carousel>
-      <Testimonios />
-
-      <Contact className="mt-2" />
     </Layout>
   );
 }
@@ -80,9 +89,20 @@ export async function getServerSideProps() {
   await db.connect();
 
   const products = await Product.find().sort({ createdAt: -1 }).lean();
+  const serializableProducts = products.map((product) => {
+    // Convert all Date objects to strings
+    Object.keys(product).forEach((key) => {
+      if (product[key] instanceof Date) {
+        product[key] = product[key].toISOString();
+      }
+    });
+    // Convert Mongoose documents to plain objects
+    return db.convertDocToObj(product);
+  });
+
   return {
     props: {
-      products: products.map(db.convertDocToObj),
+      products: serializableProducts,
     },
   };
 }

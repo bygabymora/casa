@@ -18,12 +18,12 @@ const handler = async (req, res) => {
 const postHandler = async (req, res) => {
   await db.connect();
   const newProduct = new Product({
-    name: '',
-    store: '',
+    name: 'N',
+    store: 'S',
     value: 0,
-    paymentType: '',
-    typeOfPurchase: '',
-    notes: '',
+    paymentType: 'TC Master',
+    typeOfPurchase: 'Mercado',
+    notes: 'Nada',
     date: Date.now(),
   });
 

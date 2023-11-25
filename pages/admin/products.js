@@ -142,11 +142,11 @@ export default function AdminProdcutsScreen() {
                 <thead className="border-b">
                   <tr>
                     <th className="p-2 text-left border-r border-gray-300">
-                      REF.
+                      NOMBRE
                     </th>
-                    <th className="p-2 text-left">PRECIO</th>
+                    <th className="p-2 text-left">VALOR</th>
                     <th className="p-2 text-left  border-r border-gray-300">
-                      INVENTARIO
+                      TIPO DE PAGO
                     </th>
 
                     <th className="p-2 text-left">ACCIONES</th>
@@ -156,13 +156,13 @@ export default function AdminProdcutsScreen() {
                   {products.map((product) => (
                     <tr key={product._id} className="border-b">
                       <td className=" p-2 border-r border-gray-300">
-                        {product.slug}
+                        {product.name}
                       </td>
                       <td className=" p-2 ">
-                        ${formatNumberWithDots(product.price)}
+                        ${formatNumberWithDots(product.value)}
                       </td>
                       <td className=" p-2 border-r border-gray-300">
-                        {product.countInStock}
+                        {product.paymentType}
                       </td>
 
                       <td className=" p-5 text-center flex flex-row">
