@@ -57,6 +57,7 @@ export default function AdminProductEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
+
         const { data } = await axios.get(`/api/admin/products/${productId}`);
         dispatch({ type: 'FETCH_SUCCESS' });
         setValue('name', data.name);
@@ -66,7 +67,14 @@ export default function AdminProductEditScreen() {
         setValue('paymentType', data.paymentType);
         setValue('typeOfPurchase', data.typeOfPurchase);
         setValue('notes', data.notes);
-        setValue('date', data.date);
+
+        const existingDate = data.date;
+        if (!existingDate) {
+          const currentDate = new Date().toISOString().split('T')[0];
+          setValue('date', currentDate);
+        } else {
+          setValue('date', existingDate);
+        }
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -143,12 +151,13 @@ export default function AdminProductEditScreen() {
                 .substring(productId.length - 8)
                 .toUpperCase()}`}</h1>
               <div className="mb-4">
-                <label htmlFor="slug">Referencia</label>
+                <label htmlFor="slug">Registro #</label>
                 <input
                   type="text"
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   id="slug"
                   autoFocus
+                  readOnly
                   {...register('slug', {
                     required: 'Por favor ingrese un slug',
                   })}
@@ -249,7 +258,7 @@ export default function AdminProductEditScreen() {
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="category">Fecha</label>
+                <label htmlFor="date">Fecha</label>
                 <input
                   type="date"
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
