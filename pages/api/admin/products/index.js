@@ -22,7 +22,6 @@ const postHandler = async (req, res) => {
   let newSlugNumber = 1; // Default if no products are found
 
   if (lastProduct && lastProduct.slug) {
-    // Extract the numeric part of the last slug and increment it
     const lastSlugNumber = parseInt(lastProduct.slug.match(/\d+$/), 10);
     if (!isNaN(lastSlugNumber)) {
       newSlugNumber = lastSlugNumber + 1;
