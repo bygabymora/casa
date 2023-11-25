@@ -35,7 +35,7 @@ const Navbar = () => {
             Home
           </Link>
 
-          <Link href="/products" className="nav__link">
+          <Link href="/admin/products" className="nav__link">
             <BiPhotoAlbum className="uil uil-scenery nav__icon" />
             Registros
           </Link>
