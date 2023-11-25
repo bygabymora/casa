@@ -74,7 +74,6 @@ export default function AdminProductEditScreen() {
         if (dateValue instanceof Date) {
           setValue('date', dateValue.toISOString().split('T')[0]);
         } else {
-          // Maneja el caso de que dateValue no sea una fecha válida
           console.error('Fecha no válida:', dateValue);
         }
       } catch (err) {
@@ -170,6 +169,93 @@ export default function AdminProductEditScreen() {
                 )}
               </div>
               <div className="mb-4">
+                <label htmlFor="typeOfPurchase">Tipo de Compra</label>
+                <select
+                  className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  id="typeOfPurchase"
+                  {...register('typeOfPurchase', {
+                    required: 'Por favor seleccione un tipo de compra',
+                  })}
+                >
+                  <option value="">Selecciona un tipo de compra</option>
+                  <optgroup label="Ingreso">
+                    <option value="Salario FL">Salario FL</option>
+                    <option value="Salario GM">Salario GM</option>
+                    <option value="Otro ingreso">Otro Ingreso</option>
+                  </optgroup>
+                  <optgroup label="Categoría Casa">
+                    <option value="Comida y aseo">Comida y aseo</option>
+                    <option value="Extras Casa">Extras Casa</option>
+                    <option value="Colegio Niñas">Colegio Niñas</option>
+                    <option value="María">María</option>
+                    <option value="Clases Pollos">Clases Pollos</option>
+                    <option value="Arriendo Casa">Arriendo Casa</option>
+                    <option value="Administración">Administración</option>
+                  </optgroup>
+
+                  <optgroup label="Categoría Servicios Públicos">
+                    <option value="Gas">Gas</option>
+                    <option value="Luz">Luz</option>
+                    <option value="Agua">Agua</option>
+                    <option value="Internet">Internet</option>
+                    <option value="Directv">Directv</option>
+                    <option value="Netflix">Netflix</option>
+                    <option value="Celular GMG">Celular GMG</option>
+                    <option value="Operacional GMG">Operacional GMG</option>
+                    <option value="Disney">Disney</option>
+                    <option value="YouTube">YouTube</option>
+                  </optgroup>
+
+                  <optgroup label="Categoría Carro">
+                    <option value="Gasolina">Gasolina</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                    <option value="Lavado">Lavado</option>
+                  </optgroup>
+
+                  <optgroup label="Categoría Ocio">
+                    <option value="Ocio General">Ocio General</option>
+                    <option value="Viajes">Viajes</option>
+                    <option value="Cumpleaños">Cumpleaños</option>
+                  </optgroup>
+
+                  <optgroup label="Categoría Ropa">
+                    <option value="Ropa Pollos">Ropa Pollos</option>
+                    <option value="Ropa Papás">Ropa Papás</option>
+                  </optgroup>
+
+                  <optgroup label="Categoría Perros">
+                    <option value="Comida Perros">Comida Perros</option>
+                    <option value="Guardería Perros">Guardería Perros</option>
+                    <option value="Medicina Perros">Medicina Perros</option>
+                  </optgroup>
+
+                  <optgroup label="Categoría Extracurriculares">
+                    <option value="Clases y Extracurriculares">
+                      Clases y Extracurriculares
+                    </option>
+                  </optgroup>
+
+                  <optgroup label="Categoría Ob. financieras">
+                    <option value="Crédito Bancolombia">
+                      Crédito Bancolombia
+                    </option>
+                    <option value="Crédito Banco Bogotá">
+                      Crédito Banco Bogotá
+                    </option>
+                    <option value="Pago TC Master">Pago TC Master</option>
+                    <option value="Pago TC Visa">Pago TC Visa</option>
+                    <option value="Pago TC Bancolombia">
+                      Pago TC Bancolombia
+                    </option>
+                  </optgroup>
+                </select>
+                {errors.typeOfPurchase && (
+                  <div className="text-red-500">
+                    {errors.typeOfPurchase.message}
+                  </div>
+                )}
+              </div>
+              <div className="mb-4">
                 <label htmlFor="name">Nombre</label>
                 <input
                   type="text"
@@ -184,6 +270,7 @@ export default function AdminProductEditScreen() {
                   <div className="text-red-500">{errors.name.message}</div>
                 )}
               </div>
+
               <div className="mb-4">
                 <label htmlFor="store">Tienda</label>
                 <input
@@ -214,34 +301,23 @@ export default function AdminProductEditScreen() {
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="category">Tipo de Pago</label>
-                <input
-                  type="text"
+                <label htmlFor="paymentType">Sistema de Registro</label>
+                <select
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   id="paymentType"
                   {...register('paymentType', {
-                    required: 'Por favor ingrese un tipo de pago',
+                    required: 'Por favor seleccione un tipo de pago',
                   })}
-                />
+                >
+                  <option value="">Selecciona un tipo de pago</option>
+                  <option value="TC Master">TC Master</option>
+                  <option value="TC Visa">TC Visa</option>
+                  <option value="TC Bancolombia">TC Bancolombia</option>
+                  <option value="Efectivo">Efectivo</option>
+                </select>
                 {errors.paymentType && (
                   <div className="text-red-500">
                     {errors.paymentType.message}
-                  </div>
-                )}
-              </div>
-              <div className="mb-4">
-                <label htmlFor="category">Tipo de Compra</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="typeOfPurchase"
-                  {...register('typeOfPurchase', {
-                    required: 'Por favor ingrese un tipo de compra',
-                  })}
-                />
-                {errors.typeOfPurchase && (
-                  <div className="text-red-500">
-                    {errors.typeOfPurchase.message}
                   </div>
                 )}
               </div>

@@ -8,8 +8,8 @@ export default function Layout({ title, children }) {
   return (
     <>
       <Head>
-        <title>{title ? title : 'Easy Home Designer'}</title>
-        <meta name="description" content="Easy Home Designer" />
+        <title>{title ? title : 'Familia Lagos APP'}</title>
+        <meta name="description" content="Familia Lagos APP" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ToastContainer position="bottom-center" limit={1} />

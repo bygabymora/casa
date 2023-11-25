@@ -41,7 +41,7 @@
     "postcss": "^8.4.26",
     "tailwindcss": "^3.3.3"
   },
-  "description": "Easy Home Designerwebpage",
+  "description": "App Flia Lagos",
   "main": "next.config.js",
   "author": "",
   "license": "ISC"
