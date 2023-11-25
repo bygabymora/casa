@@ -67,8 +67,16 @@ export default function AdminProductEditScreen() {
         setValue('paymentType', data.paymentType);
         setValue('typeOfPurchase', data.typeOfPurchase);
         setValue('notes', data.notes);
-        const existingDate = data.date.toISOString().split('T')[0];
-        setValue('date', existingDate);
+        let dateValue = data.date;
+        if (typeof dateValue === 'string') {
+          dateValue = new Date(dateValue);
+        }
+        if (dateValue instanceof Date) {
+          setValue('date', dateValue.toISOString().split('T')[0]);
+        } else {
+          // Maneja el caso de que dateValue no sea una fecha válida
+          console.error('Fecha no válida:', dateValue);
+        }
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
