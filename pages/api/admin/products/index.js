@@ -18,22 +18,18 @@ const handler = async (req, res) => {
 const postHandler = async (req, res) => {
   await db.connect();
   const newProduct = new Product({
-    name: 'Nombre del producto',
-    slug: 'Código' + Math.random(),
-    image:
-      'https://res.cloudinary.com/dcjahs0jp/image/upload/v1692313973/tgesmy2eeunhammc5koa.png',
-    reference: 'Referencia',
-    description: 'Descripción del producto',
-    price: 0,
-    size: 'Tamaño',
-    countInStock: 0,
-    notes: 'Notas extra ',
-    includes: 'Incluye',
+    name: '',
+    store: '',
+    value: 0,
+    paymentType: '',
+    typeOfPurchase: '',
+    notes: '',
+    date: Date.now(),
   });
 
   const product = await newProduct.save();
   await db.disconnect();
-  res.send({ message: 'Product creado exitosamente', product });
+  res.send({ message: 'Registro creado exitosamente', product });
 };
 const getHandler = async (req, res) => {
   await db.connect();

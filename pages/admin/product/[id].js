@@ -41,11 +41,10 @@ function reducer(state, action) {
 export default function AdminProductEditScreen() {
   const { query } = useRouter();
   const productId = query.id;
-  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: '',
-    });
+  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  });
 
   const {
     register,
@@ -61,15 +60,12 @@ export default function AdminProductEditScreen() {
         const { data } = await axios.get(`/api/admin/products/${productId}`);
         dispatch({ type: 'FETCH_SUCCESS' });
         setValue('name', data.name);
-        setValue('slug', data.slug);
-        setValue('image', data.image);
-        setValue('reference', data.reference);
-        setValue('size', data.size);
-        setValue('description', data.description);
-        setValue('price', data.price);
-        setValue('countInStock', data.countInStock);
+        setValue('store', data.store);
+        setValue('value', data.value);
+        setValue('paymentType', data.paymentType);
+        setValue('typeOfPurchase', data.typeOfPurchase);
         setValue('notes', data.notes);
-        setValue('includes', data.includes);
+        setValue('date', data.date);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -80,55 +76,25 @@ export default function AdminProductEditScreen() {
 
   const router = useRouter();
 
-  const uploadHandler = async (e, imageField = 'image') => {
-    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
-    try {
-      dispatch({ type: 'UPLOAD_REQUEST' });
-      const {
-        data: { signature, timestamp },
-      } = await axios('/api/admin/cloudinary-sign');
-
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('signature', signature);
-      formData.append('timestamp', timestamp);
-      formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
-      const { data } = await axios.post(url, formData);
-      dispatch({ type: 'UPLOAD_SUCCESS' });
-      setValue(imageField, data.secure_url);
-      toast.success('File uploaded successfully');
-    } catch (err) {
-      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
-      toast.error(getError(err));
-    }
-  };
-
   const submitHandler = async ({
     name,
-    slug,
-    image,
-    size,
-    reference,
-    description,
-    price,
-    countInStock,
+    store,
+    value,
+    paymentType,
+    typeOfPurchase,
     notes,
-    includes,
+    date,
   }) => {
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(`/api/admin/products/${productId}`, {
         name,
-        slug,
-        image,
-        reference,
-        size,
-        description,
-        price,
-        countInStock,
+        store,
+        value,
+        paymentType,
+        typeOfPurchase,
         notes,
-        includes,
+        date,
       });
       dispatch({ type: 'UPDATE_SUCCESS' });
       toast.success('Product updated successfully');
@@ -148,10 +114,10 @@ export default function AdminProductEditScreen() {
               <Link href="/admin/dashboard">Pánel</Link>
             </li>
             <li>
-              <Link href="/admin/orders">Órdenes</Link>
+              <Link href="/admin/orders">Consumos</Link>
             </li>
             <li>
-              <Link href="/admin/products">Productos</Link>
+              <Link href="/admin/products">Registros</Link>
             </li>
             <li>
               <Link href="/admin/users" className="font-bold">
@@ -170,7 +136,7 @@ export default function AdminProductEditScreen() {
               className="mx-auto max-w-screen-md"
               onSubmit={handleSubmit(submitHandler)}
             >
-              <h1 className="mb-4 text-xl">{`Editar Producto ${productId
+              <h1 className="mb-4 text-xl">{`Editar Registro ${productId
                 .substring(productId.length - 8)
                 .toUpperCase()}`}</h1>
               <div className="mb-4">
@@ -188,110 +154,66 @@ export default function AdminProductEditScreen() {
                   <div className="text-red-500">{errors.name.message}</div>
                 )}
               </div>
-
               <div className="mb-4">
-                <label htmlFor="slug">Referencia</label>
+                <label htmlFor="store">Tienda</label>
                 <input
                   type="text"
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="slug"
-                  {...register('slug', {
-                    required: 'Por favor ingrese una referencia',
+                  id="store"
+                  {...register('store', {
+                    required: 'Por favor ingrese una tienda',
                   })}
                 />
-                {errors.slug && (
-                  <div className="text-red-500">{errors.slug.message}</div>
+                {errors.store && (
+                  <div className="text-red-500">{errors.store.message}</div>
                 )}
               </div>
+
               <div className="mb-4">
-                <label htmlFor="image">Imagen</label>
+                <label htmlFor="value">Valor</label>
                 <input
-                  type="text"
+                  type="number"
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="image"
-                  {...register('image', {
-                    required: 'Por favor ingrese una imagen',
+                  id="value"
+                  {...register('value', {
+                    required: 'Por favor ingrese un valor',
                   })}
                 />
-                {errors.image && (
-                  <div className="text-red-500">{errors.image.message}</div>
+                {errors.value && (
+                  <div className="text-red-500">{errors.value.message}</div>
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="imageFile">Cargar Imagen</label>
+                <label htmlFor="category">Tipo de Pago</label>
                 <input
-                  type="file"
-                  className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="imageFile"
-                  onChange={uploadHandler}
-                />
-
-                {loadingUpload && <div>Uploading....</div>}
-              </div>
-              <div className="mb-4">
-                <label hidden htmlFor="reference">
-                  Referencia
-                </label>
-                <input
-                  hidden
-                  value={productId}
                   type="text"
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="reference"
-                  {...register('reference', {})}
+                  id="paymentType"
+                  {...register('paymentType', {
+                    required: 'Por favor ingrese un tipo de pago',
+                  })}
                 />
-                {errors.reference && (
-                  <div className="text-red-500">{errors.reference.message}</div>
+                {errors.paymentType && (
+                  <div className="text-red-500">
+                    {errors.paymentType.message}
+                  </div>
                 )}
               </div>
-              <div>
-                <h2>Each</h2>
-                <div className="mb-4">
-                  <label htmlFor="description">Descripción</label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="description"
-                    {...register('description', {
-                      required: 'Por favor ingrese una descripción',
-                    })}
-                  />
-                  {errors.description && (
-                    <div className="text-red-500">
-                      {errors.description.message}
-                    </div>
-                  )}
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="price">Price Each</label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="price"
-                    {...register('price', {
-                      required: 'Please enter price',
-                    })}
-                  />
-                  {errors.price && (
-                    <div className="text-red-500">{errors.price.message}</div>
-                  )}
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="countInStock">Inventario</label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="countInStock"
-                    {...register('countInStock', {
-                      required: 'Por favor ingrese un inventario',
-                    })}
-                  />
-                  {errors.countInStock && (
-                    <div className="text-red-500">
-                      {errors.countInStock.message}
-                    </div>
-                  )}
-                </div>
+              <div className="mb-4">
+                <label htmlFor="category">Tipo de Compra</label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  id="typeOfPurchase"
+                  {...register('typeOfPurchase', {
+                    required: 'Por favor ingrese un tipo de compra',
+                  })}
+                />
+                {errors.typeOfPurchase && (
+                  <div className="text-red-500">
+                    {errors.typeOfPurchase.message}
+                  </div>
+                )}
               </div>
 
               <div className="mb-4">
@@ -309,17 +231,17 @@ export default function AdminProductEditScreen() {
                 )}
               </div>
               <div className="mb-4">
-                <label htmlFor="category">Incluye</label>
+                <label htmlFor="category">Fecha</label>
                 <input
-                  type="text"
+                  type="date"
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="includes"
-                  {...register('includes', {
-                    required: 'Por favor ingrese que incluye',
+                  id="date"
+                  {...register('date', {
+                    required: 'Por favor ingrese una fecha',
                   })}
                 />
-                {errors.notes && (
-                  <div className="text-red-500">{errors.notes.message}</div>
+                {errors.date && (
+                  <div className="text-red-500">{errors.date.message}</div>
                 )}
               </div>
 

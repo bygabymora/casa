@@ -29,21 +29,18 @@ const putHandler = async (req, res) => {
   const product = await Product.findById(req.query.id);
   if (product) {
     product.name = req.body.name;
-    product.slug = req.body.slug;
-    product.image = req.body.image;
-    product.reference = req.body.reference;
-    product.description = req.body.description;
-    product.price = req.body.price;
-    product.size = req.body.size;
-    product.countInStock = req.body.countInStock;
+    product.store = req.body.store;
+    product.value = req.body.value;
+    product.paymentType = req.body.paymentType;
+    product.typeOfPurchase = req.body.typeOfPurchase;
     product.notes = req.body.notes;
-    product.includes = req.body.includes;
+    product.date = req.body.date;
     await product.save();
     await db.disconnect();
-    res.send({ message: 'Producto actualizado exiosamente' });
+    res.send({ message: 'Registro actualizado exiosamente' });
   } else {
     await db.disconnect();
-    res.status(404).send({ message: 'Producto no encontrado' });
+    res.status(404).send({ message: 'Registro no encontrado' });
   }
 };
 const deleteHandler = async (req, res) => {
@@ -54,10 +51,10 @@ const deleteHandler = async (req, res) => {
   if (product) {
     await Product.findByIdAndDelete(req.query.id);
     await db.disconnect();
-    res.send({ message: 'Producto borrado exitosamente' });
+    res.send({ message: 'Registro borrado exitosamente' });
   } else {
     await db.disconnect();
-    res.status(404).send({ message: 'Producto no encontrado' });
+    res.status(404).send({ message: 'Registro no encontrado' });
   }
 };
 
