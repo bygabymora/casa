@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    slug: { type: String, required: false, unique: true },
     store: { type: String, required: true },
     value: { type: Number, default: 0, required: true },
     paymentType: { type: String, required: true },

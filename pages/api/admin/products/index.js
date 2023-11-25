@@ -19,6 +19,7 @@ const postHandler = async (req, res) => {
   await db.connect();
   const newProduct = new Product({
     name: 'N',
+    slug: 'S',
     store: 'S',
     value: 0,
     paymentType: 'TC Master',

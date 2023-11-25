@@ -29,6 +29,7 @@ const putHandler = async (req, res) => {
   const product = await Product.findById(req.query.id);
   if (product) {
     product.name = req.body.name;
+    product.slug = req.body.slug;
     product.store = req.body.store;
     product.value = req.body.value;
     product.paymentType = req.body.paymentType;

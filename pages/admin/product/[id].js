@@ -60,6 +60,7 @@ export default function AdminProductEditScreen() {
         const { data } = await axios.get(`/api/admin/products/${productId}`);
         dispatch({ type: 'FETCH_SUCCESS' });
         setValue('name', data.name);
+        setValue('slug', data.slug);
         setValue('store', data.store);
         setValue('value', data.value);
         setValue('paymentType', data.paymentType);
@@ -78,6 +79,7 @@ export default function AdminProductEditScreen() {
 
   const submitHandler = async ({
     name,
+    slug,
     store,
     value,
     paymentType,
@@ -89,6 +91,7 @@ export default function AdminProductEditScreen() {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(`/api/admin/products/${productId}`, {
         name,
+        slug,
         store,
         value,
         paymentType,
@@ -139,6 +142,22 @@ export default function AdminProductEditScreen() {
               <h1 className="mb-4 text-xl">{`Editar Registro ${productId
                 .substring(productId.length - 8)
                 .toUpperCase()}`}</h1>
+              <div className="mb-4">
+                <label htmlFor="slug">Referencia</label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  id="slug"
+                  readOnly
+                  autoFocus
+                  {...register('slug', {
+                    required: 'Por favor ingrese un slug',
+                  })}
+                />
+                {errors.slug && (
+                  <div className="text-red-500">{errors.slug.message}</div>
+                )}
+              </div>
               <div className="mb-4">
                 <label htmlFor="name">Nombre</label>
                 <input
