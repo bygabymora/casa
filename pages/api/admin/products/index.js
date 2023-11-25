@@ -17,9 +17,23 @@ const handler = async (req, res) => {
 };
 const postHandler = async (req, res) => {
   await db.connect();
+  // Find the latest product
+  const lastProduct = await Product.findOne({}).sort({ _id: -1 });
+  let newSlugNumber = 1; // Default if no products are found
+
+  if (lastProduct && lastProduct.slug) {
+    // Extract the numeric part of the last slug and increment it
+    const lastSlugNumber = parseInt(lastProduct.slug.match(/\d+$/), 10);
+    if (!isNaN(lastSlugNumber)) {
+      newSlugNumber = lastSlugNumber + 1;
+    }
+  }
+
+  // Construct new slug
+  const newSlug = `product-${newSlugNumber}`;
   const newProduct = new Product({
     name: 'N',
-    slug: 'S',
+    slug: newSlug,
     store: 'S',
     value: 0,
     paymentType: 'TC Master',
