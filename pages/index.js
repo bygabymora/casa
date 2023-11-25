@@ -40,7 +40,7 @@ export default function Home() {
       dispatch({ type: 'CREATE_REQUEST' });
       const { data } = await axios.post(`/api/admin/products`);
       dispatch({ type: 'CREATE_SUCCESS' });
-      toast.success('PRODUCTO CREADO EXITOSAMENTE');
+      toast.success('REGISTRO CREADO EXITOSAMENTE');
       router.push(`/admin/product/${data.product._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });

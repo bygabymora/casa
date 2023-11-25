@@ -62,9 +62,6 @@ export default function ProfileScreen() {
           <strong>Email:</strong>
           <div>{session.user.email}</div>
         </p>
-        <Link href={'/order-history'} className="font-bold underline">
-          Historial de órdenes
-        </Link>
       </div>
       <div
         className={`mx-auto max-w-screen-md ${

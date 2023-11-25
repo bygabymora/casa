@@ -59,7 +59,7 @@ export default function AdminProdcutsScreen() {
       dispatch({ type: 'CREATE_REQUEST' });
       const { data } = await axios.post(`/api/admin/products`);
       dispatch({ type: 'CREATE_SUCCESS' });
-      toast.success('PRODUCTO CREADO EXITOSAMENTE');
+      toast.success('REGISTRO CREADO EXITOSAMENTE');
       router.push(`/admin/product/${data.product._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
@@ -93,7 +93,7 @@ export default function AdminProdcutsScreen() {
       await axios.delete(`/api/admin/products/${productId}`);
       console.log({ productId });
       dispatch({ type: 'DELETE_SUCCESS' });
-      toast.success('PRODUCTO BORRADO EXITOSAMENTE');
+      toast.success('REGISTRO BORRADO EXITOSAMENTE');
     } catch (err) {
       dispatch({ type: 'DELETE_FAIL' });
       toast.error(getError(err));

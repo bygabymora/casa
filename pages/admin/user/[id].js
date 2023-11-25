@@ -103,9 +103,7 @@ export default function AdminUserEditScreen() {
             <li>
               <Link href="/admin/orders">Órdenes</Link>
             </li>
-            <li>
-              <Link href="/admin/products">Productos</Link>
-            </li>
+
             <li>
               <Link href="/admin/users" className="font-bold">
                 Usuarios

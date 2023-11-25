@@ -79,11 +79,9 @@ function AdminUsersScreen() {
             <li>
               <Link href="/admin/dashboard">Pánel</Link>
             </li>
+
             <li>
-              <Link href="/admin/orders">Órdenes</Link>
-            </li>
-            <li>
-              <Link href="/admin/products">Productos</Link>
+              <Link href="/admin/products">REGISTROS</Link>
             </li>
             <li>
               <Link href="/admin/users" className="font-bold">
