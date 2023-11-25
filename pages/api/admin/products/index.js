@@ -29,7 +29,8 @@ const postHandler = async (req, res) => {
   }
 
   // Construct new slug
-  const newSlug = `product-${newSlugNumber}`;
+  const newSlug = `${newSlugNumber}`;
+
   const newProduct = new Product({
     name: 'N',
     slug: newSlug,
