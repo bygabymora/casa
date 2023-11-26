@@ -81,6 +81,12 @@ export default function Home() {
         >
           Dashboard
         </Link>
+        <Link
+          href="/admin/products"
+          className="primary-button align-middle text-center w-[70%]"
+        >
+          Registros anteriores
+        </Link>
       </div>
     </Layout>
   );

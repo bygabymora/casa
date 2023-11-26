@@ -147,12 +147,6 @@ export default function AdminProdcutsScreen() {
                       NOMBRE
                     </th>
                     <th className="p-2 text-left">VALOR</th>
-                    <th className="p-2 text-left hidden lg:block ">
-                      TIPO DE PAGO
-                    </th>
-                    <th className="p-2 text-left hidden lg:block border-r border-gray-300">
-                      FECHA
-                    </th>
 
                     <th className="p-2 text-left">ACCIONES</th>
                   </tr>
@@ -165,12 +159,6 @@ export default function AdminProdcutsScreen() {
                       </td>
                       <td className=" p-2 ">
                         ${formatNumberWithDots(product.value)}
-                      </td>
-                      <td className=" p-2 hidden lg:block ">
-                        {product.paymentType}
-                      </td>
-                      <td className=" p-2 border-r border-gray-300 hidden lg:block">
-                        {product.date.substring(0, 10)}
                       </td>
 
                       <td className=" p-5 text-center flex flex-col lg:flex-row">
