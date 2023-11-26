@@ -6,6 +6,8 @@ import {
   BiGridVertical,
   BiXCircle,
 } from 'react-icons/bi';
+import { BsSpeedometer } from 'react-icons/bs';
+import { MdOutlineSpaceDashboard } from 'react-icons/md';
 
 import { useRouter } from 'next/router';
 
@@ -38,6 +40,14 @@ const Navbar = () => {
           <Link href="/admin/products" className="nav__link">
             <BiPhotoAlbum className="uil uil-scenery nav__icon" />
             Registros
+          </Link>
+          <Link href="/" className="nav__link">
+            <BsSpeedometer className="uil uil-estate nav__icon" />
+            Consumos
+          </Link>
+          <Link href="/" className="nav__link">
+            <MdOutlineSpaceDashboard className="uil uil-estate nav__icon" />
+            Dashboard
           </Link>
         </div>
         <BiXCircle

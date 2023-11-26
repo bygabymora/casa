@@ -98,7 +98,7 @@ export default function AdminUserEditScreen() {
         <div>
           <ul>
             <li>
-              <Link href="/admin/dashboard">Pánel</Link>
+              <Link href="/admin/dashboard">Dashboard</Link>
             </li>
             <li>
               <Link href="/admin/orders">Órdenes</Link>

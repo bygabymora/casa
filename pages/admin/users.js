@@ -77,7 +77,7 @@ function AdminUsersScreen() {
         <div>
           <ul>
             <li>
-              <Link href="/">Pánel</Link>
+              <Link href="/">Dashboard</Link>
             </li>
             <li>
               <Link href="/">Consumos</Link>
