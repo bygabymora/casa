@@ -79,20 +79,15 @@ const SignupButton = () => {
                       <div className="ml-2">Perfil</div>
                     </DropdownLink>
                   </Menu.Item>
-                  <Menu.Item className="dropdown-link">
-                    <DropdownLink href="/order-history">
-                      <div className="ml-2">Historial de órdenes</div>
-                    </DropdownLink>
+
+                  <Menu.Item>
+                    <div>
+                      <DropdownLink href="/">
+                        <div className="ml-2">Panel de administrador</div>
+                      </DropdownLink>
+                    </div>
                   </Menu.Item>
-                  {session.user.isAdmin && (
-                    <Menu.Item className="dropdown-link ">
-                      <div>
-                        <DropdownLink href="/admin/dashboard">
-                          <div className="ml-2">Panel de administrador</div>
-                        </DropdownLink>
-                      </div>
-                    </Menu.Item>
-                  )}
+
                   <Menu.Item>
                     <DropdownLink
                       href="/"
