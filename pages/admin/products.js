@@ -104,7 +104,7 @@ export default function AdminProdcutsScreen() {
     <Layout>
       <div className="grid md:grid-cols-4 md:gap-2">
         <div>
-          <ul>
+          <ul className="hidden lg:block">
             <li>
               <Link href="/">Dashboard</Link>
             </li>
