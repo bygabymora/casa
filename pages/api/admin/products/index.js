@@ -46,10 +46,31 @@ const postHandler = async (req, res) => {
   await db.disconnect();
   res.send({ message: 'Registro creado exitosamente', product });
 };
+
 const getHandler = async (req, res) => {
   await db.connect();
-  const products = await Product.find({});
-  await db.disconnect();
-  res.send(products);
+
+  // Check for a specific query parameter to decide the action
+  const { action } = req.query;
+
+  if (action === 'aggregate') {
+    // Perform aggregation if the action is 'aggregate'
+    const consumos = await Product.aggregate([
+      {
+        $group: {
+          _id: '$typeOfPurchase', // Group by 'typeOfPurchase'
+          totalValue: { $sum: '$value' }, // Sum the 'value' for each group
+        },
+      },
+    ]);
+    await db.disconnect();
+    res.send(consumos);
+  } else {
+    // Else, return the list of products as before
+    const products = await Product.find({});
+    await db.disconnect();
+    res.send(products);
+  }
 };
+
 export default handler;
