@@ -40,7 +40,7 @@ const Header = () => {
                 className="nav__logo_2 logo"
                 onClick={handleHomeClick}
               >
-                <div className="r__logo r__logo-2">
+                <div className="r__logo r__logo-2 ">
                   <Image src={Logo} alt="logo" width={400} />
                 </div>
               </Link>

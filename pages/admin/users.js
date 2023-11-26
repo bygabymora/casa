@@ -80,15 +80,15 @@ function AdminUsersScreen() {
               <Link href="/">Dashboard</Link>
             </li>
             <li>
-              <Link href="/">Consumos</Link>
+              <Link href="/admin/consumos">Consumos</Link>
             </li>
             <li>
-              <Link href="/admin/products" className="font-bold">
-                Registros
+              <Link href="/admin/products">Registros</Link>
+            </li>
+            <li>
+              <Link href="/admin/users" className="font-bold">
+                Usuarios
               </Link>
-            </li>
-            <li>
-              <Link href="/admin/users">Usuarios</Link>
             </li>
           </ul>
         </div>

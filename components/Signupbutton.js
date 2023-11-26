@@ -83,7 +83,7 @@ const SignupButton = () => {
                   <Menu.Item>
                     <div>
                       <DropdownLink href="/">
-                        <div className="ml-2">Panel de administrador</div>
+                        <div className="ml-2">Dashboard</div>
                       </DropdownLink>
                     </div>
                   </Menu.Item>
