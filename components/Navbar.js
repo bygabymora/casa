@@ -41,7 +41,7 @@ const Navbar = () => {
             <BiPhotoAlbum className="uil uil-scenery nav__icon" />
             Registros
           </Link>
-          <Link href="/" className="nav__link">
+          <Link href="/admin/consumos" className="nav__link">
             <BsSpeedometer className="uil uil-estate nav__icon" />
             Consumos
           </Link>

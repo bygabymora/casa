@@ -7,8 +7,6 @@ import { BsSpeedometer } from 'react-icons/bs';
 export default function Consumos() {
   const [consumos, setConsumos] = useState([]);
   const [paymentTypeSums, setPaymentTypeSums] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); // current month
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // current year
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,71 +95,53 @@ export default function Consumos() {
             </ul>
           </div>
         </div>
-        <div className="date-selector">
-          <select
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-          >
-            {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-              <option key={month} value={month}>
-                {month}
-              </option>
-            ))}
-          </select>
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
-          >
-            {Array.from(
-              { length: 5 },
-              (_, i) => new Date().getFullYear() - i
-            ).map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-        <h1 className="text-2xl font-bold border-b border-gray-300">
-          Por Categoria
-        </h1>
-        <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
-          {aggregatedSums.map(({ mainCategory, totalSum }) => (
-            <div key={mainCategory} className="card p-2 text-center">
-              <Link
-                href={`/admin/${mainCategory}`}
-                className="flex flex-col items-center justify-center"
-              >
-                <div className=" p-2 border-b border-gray-300 mb-2 font-bold">
-                  {mainCategory}
+        <div className="col-span-3 flex flex-col">
+          <div className="mb-3">
+            <h1 className="text-2xl font-bold border-b border-gray-300">
+              Por Categoria
+            </h1>
+            <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
+              {aggregatedSums.map(({ mainCategory, totalSum }) => (
+                <div key={mainCategory} className="card p-2 text-center">
+                  <Link
+                    href={`/admin/${mainCategory}`}
+                    className="flex flex-col items-center justify-center"
+                  >
+                    <div className=" p-2 border-b border-gray-300 mb-2 font-bold">
+                      {mainCategory}
+                    </div>
+                    <BsSpeedometer className="mx-auto" />
+                    <p className="font-bold">
+                      Total:
+                      <br />
+                      <span className="font-light">{totalSum}</span>
+                    </p>
+                  </Link>
                 </div>
-                <BsSpeedometer className="mx-auto" />
-                <p className="font-bold">
-                  Total:
-                  <br />
-                  <span className="font-light">{totalSum}</span>
-                </p>
-              </Link>
+              ))}
             </div>
-          ))}
-        </div>
-        <h1 className="text-2xl font-bold border-b border-gray-300">
-          Por Medio de Pago
-        </h1>
-        <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
-          {paymentTypeSums.map(({ _id: paymentType, totalValue }) => (
-            <div key={paymentType} className="card p-2 text-center">
-              <div className="p-2 border-b border-gray-300 mb-2 font-bold">
-                {paymentType || 'Unknown'}
-              </div>
-              <BsSpeedometer className="mx-auto" />
-              <p className="font-bold">
-                Total:
-                <br />
-                <span className="font-light">{totalValue}</span>
-              </p>
+          </div>
+
+          <div className="mb-3">
+            <h1 className="text-2xl font-bold border-b border-gray-300">
+              Por Medio de Pago
+            </h1>
+            <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
+              {paymentTypeSums.map(({ _id: paymentType, totalValue }) => (
+                <div key={paymentType} className="card p-2 text-center">
+                  <div className="p-2 border-b border-gray-300 mb-2 font-bold">
+                    {paymentType || 'Unknown'}
+                  </div>
+                  <BsSpeedometer className="mx-auto" />
+                  <p className="font-bold">
+                    Total:
+                    <br />
+                    <span className="font-light">{totalValue}</span>
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </Layout>
