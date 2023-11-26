@@ -186,6 +186,7 @@ export default function AdminProductEditScreen() {
                   <optgroup label="Categoría Casa">
                     <option value="Comida y aseo">Comida y aseo</option>
                     <option value="Extras Casa">Extras Casa</option>
+                    <option value="Medicinas">Medicinas</option>
                     <option value="Colegio Niñas">Colegio Niñas</option>
                     <option value="María">María</option>
                     <option value="Clases Pollos">Clases Pollos</option>
@@ -210,6 +211,7 @@ export default function AdminProductEditScreen() {
                     <option value="Gasolina">Gasolina</option>
                     <option value="Mantenimiento">Mantenimiento</option>
                     <option value="Lavado">Lavado</option>
+                    <option value="Parqueadero">Parqueadero</option>
                   </optgroup>
 
                   <optgroup label="Categoría Ocio">
