@@ -50,23 +50,34 @@ const postHandler = async (req, res) => {
 const getHandler = async (req, res) => {
   await db.connect();
 
-  // Check for a specific query parameter to decide the action
   const { action } = req.query;
 
-  if (action === 'aggregate') {
-    // Perform aggregation if the action is 'aggregate'
+  if (action === 'aggregateTypeOfPurchase') {
+    // Perform aggregation by 'typeOfPurchase'
     const consumos = await Product.aggregate([
       {
         $group: {
-          _id: '$typeOfPurchase', // Group by 'typeOfPurchase'
-          totalValue: { $sum: '$value' }, // Sum the 'value' for each group
+          _id: '$typeOfPurchase',
+          totalValue: { $sum: '$value' },
+        },
+      },
+    ]);
+    await db.disconnect();
+    res.send(consumos);
+  } else if (action === 'aggregatePaymentType') {
+    // Perform aggregation by 'paymentType'
+    const consumos = await Product.aggregate([
+      {
+        $group: {
+          _id: '$paymentType',
+          totalValue: { $sum: '$value' },
         },
       },
     ]);
     await db.disconnect();
     res.send(consumos);
   } else {
-    // Else, return the list of products as before
+    // Else, return the list of products
     const products = await Product.find({});
     await db.disconnect();
     res.send(products);
