@@ -55,7 +55,6 @@ export default function Consumos() {
     ],
   };
 
-  // Aggregate sums for main categories
   const aggregatedSums = Object.keys(mainCategories).map((mainCategory) => {
     const subcategories = mainCategories[mainCategory];
     const totalSum = subcategories.reduce((sum, subcategory) => {
@@ -68,7 +67,7 @@ export default function Consumos() {
 
   return (
     <Layout>
-      <div className="grid md:grid-cols-4 md:gap-2">
+      <div className="grid md:grid-cols-4 md:gap-2 mb-5">
         <div>
           <div>
             <ul className="hidden lg:block">
@@ -90,7 +89,7 @@ export default function Consumos() {
           </div>
         </div>
         <div className="col-span-3">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
             {aggregatedSums.map(({ mainCategory, totalSum }) => (
               <div key={mainCategory} className="card p-2 text-center">
                 <Link
@@ -102,7 +101,9 @@ export default function Consumos() {
                   </div>
                   <BsSpeedometer className="mx-auto" />
                   <p className="font-bold">
-                    Total Value: <span className="font-light">{totalSum}</span>
+                    Total Value:
+                    <br />
+                    <span className="font-light">{totalSum}</span>
                   </p>
                 </Link>
               </div>
