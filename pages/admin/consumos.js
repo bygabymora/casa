@@ -7,21 +7,45 @@ import { BsSpeedometer } from 'react-icons/bs';
 export default function Consumos() {
   const [consumos, setConsumos] = useState([]);
   const [paymentTypeSums, setPaymentTypeSums] = useState([]);
+  const [fecha, setFecha] = useState(new Date());
+
+  const monthPlusOne = fecha.getMonth();
+  const yearPlusOne = fecha.getFullYear();
+
+  const fechaPlusOneMonth = new Date(
+    Date.UTC(yearPlusOne, monthPlusOne, 1, 0, 0, 0, 0)
+  );
+
+  const handleDateChange = (e) => {
+    const chanhedDate = new Date(e.target.value);
+    const month = chanhedDate.getMonth() + 2;
+    const year = chanhedDate.getFullYear();
+    const updatedDate = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
+    setFecha(updatedDate);
+  };
+
+  const formatNumberWithDots = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
+      const month = fecha.getMonth() + 1;
+      const year = fecha.getFullYear();
+      console.log('month', month);
+      console.log('year', year);
       const typeOfPurchaseResult = await axios(
-        '/api/admin/products?action=aggregateTypeOfPurchase'
+        `/api/admin/products?action=aggregateTypeOfPurchase&month=${month}&year=${year}`
       );
       setConsumos(typeOfPurchaseResult.data);
 
       const paymentTypeResult = await axios(
-        '/api/admin/products?action=aggregatePaymentType'
+        `/api/admin/products?action=aggregatePaymentType&month=${month}&year=${year}`
       );
       setPaymentTypeSums(paymentTypeResult.data);
     };
     fetchData();
-  }, []);
+  }, [fecha]);
 
   // Main categories and their subcategories
   const mainCategories = {
@@ -96,6 +120,14 @@ export default function Consumos() {
           </div>
         </div>
         <div className="col-span-3 flex flex-col">
+          <div>
+            <input
+              type="month"
+              value={fechaPlusOneMonth.toISOString().substring(0, 7)}
+              onChange={handleDateChange}
+            />
+          </div>
+
           <div className="mb-3">
             <h1 className="text-2xl font-bold border-b border-gray-300">
               Por Categoria
@@ -114,7 +146,9 @@ export default function Consumos() {
                     <p className="font-bold">
                       Total:
                       <br />
-                      <span className="font-light">{totalSum}</span>
+                      <span className="font-normal">
+                        ${formatNumberWithDots(totalSum)}
+                      </span>
                     </p>
                   </Link>
                 </div>
@@ -136,7 +170,9 @@ export default function Consumos() {
                   <p className="font-bold">
                     Total:
                     <br />
-                    <span className="font-light">{totalValue}</span>
+                    <span className="font-normal">
+                      ${formatNumberWithDots(totalValue)}
+                    </span>
                   </p>
                 </div>
               ))}

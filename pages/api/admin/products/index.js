@@ -49,12 +49,15 @@ const postHandler = async (req, res) => {
 
 const getHandler = async (req, res) => {
   await db.connect();
-
-  const { action } = req.query;
+  const { action, month, year } = req.query;
+  const startDate = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0, 0));
+  startDate.setUTCHours(startDate.getUTCHours() - 5);
+  const endDate = new Date(Date.UTC(year, month, 0, 0, 0, 0, 0));
+  endDate.setUTCHours(endDate.getUTCHours() - 6);
 
   if (action === 'aggregateTypeOfPurchase') {
-    // Perform aggregation by 'typeOfPurchase'
     const consumos = await Product.aggregate([
+      { $match: { date: { $gte: startDate, $lte: endDate } } },
       {
         $group: {
           _id: '$typeOfPurchase',
@@ -65,8 +68,15 @@ const getHandler = async (req, res) => {
     await db.disconnect();
     res.send(consumos);
   } else if (action === 'aggregatePaymentType') {
-    // Perform aggregation by 'paymentType'
+    const exclusionTypes = ['Salario FL', 'Salario GM', 'Otro ingreso'];
+
     const consumos = await Product.aggregate([
+      {
+        $match: {
+          date: { $gte: startDate, $lte: endDate },
+          typeOfPurchase: { $nin: exclusionTypes }, // Excluir los tipos de compra de 'Ingreso'
+        },
+      },
       {
         $group: {
           _id: '$paymentType',
