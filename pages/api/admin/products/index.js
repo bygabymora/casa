@@ -74,7 +74,7 @@ const getHandler = async (req, res) => {
       {
         $match: {
           date: { $gte: startDate, $lte: endDate },
-          typeOfPurchase: { $nin: exclusionTypes }, // Excluir los tipos de compra de 'Ingreso'
+          typeOfPurchase: { $nin: exclusionTypes },
         },
       },
       {

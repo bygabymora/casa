@@ -32,8 +32,7 @@ export default function Consumos() {
     const fetchData = async () => {
       const month = fecha.getMonth() + 1;
       const year = fecha.getFullYear();
-      console.log('month', month);
-      console.log('year', year);
+
       const typeOfPurchaseResult = await axios(
         `/api/admin/products?action=aggregateTypeOfPurchase&month=${month}&year=${year}`
       );
@@ -77,7 +76,7 @@ export default function Consumos() {
     Ropa: ['Ropa Pollos', 'Ropa Papás'],
     Perros: ['Comida Perros', 'Guardería Perros', 'Medicina Perros'],
     Extracurriculares: ['Clases y Extracurriculares'],
-    ' Ob. financieras': [
+    'Ob. financieras': [
       'Crédito Bancolombia',
       'Crédito Banco Bogotá',
       'Pago TC Master',
@@ -136,7 +135,7 @@ export default function Consumos() {
               {aggregatedSums.map(({ mainCategory, totalSum }) => (
                 <div key={mainCategory} className="card p-2 text-center">
                   <Link
-                    href={`/admin/${mainCategory}`}
+                    href={`/admin/consumosDetallados/${mainCategory}`}
                     className="flex flex-col items-center justify-center"
                   >
                     <div className=" p-2 border-b border-gray-300 mb-2 font-bold">
