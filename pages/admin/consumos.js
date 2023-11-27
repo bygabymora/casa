@@ -52,7 +52,6 @@ export default function Consumos() {
     Ingreso: ['Salario FL', 'Salario GM', 'Otro ingreso'],
     Casa: [
       'Comida y aseo',
-      'Comidas afuera',
       'Extras Casa',
       'Medicinas',
       'Colegio Niñas',
@@ -74,7 +73,7 @@ export default function Consumos() {
       'YouTube',
     ],
     Carro: ['Gasolina', 'Mantenimiento', 'Lavado', 'Parqueadero'],
-    Ocio: ['Ocio General', 'Viajes', 'Cumpleaños'],
+    Ocio: ['Ocio General', 'Viajes', 'Cumpleaños', 'Comidas afuera'],
     Ropa: ['Ropa Pollos', 'Ropa Papás'],
     Perros: ['Comida Perros', 'Guardería Perros', 'Medicina Perros'],
     Extracurriculares: ['Clases y Extracurriculares'],
