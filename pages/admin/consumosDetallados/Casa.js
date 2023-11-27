@@ -113,9 +113,7 @@ export default function CasaScreen() {
               product.typeOfPurchase === 'Administración')
           );
         });
-        filteredData.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
+        filteredData.sort((a, b) => new Date(b.date) - new Date(a.date));
         dispatch({ type: 'FETCH_SUCCESS', payload: filteredData });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
