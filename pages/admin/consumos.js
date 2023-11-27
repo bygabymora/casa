@@ -52,6 +52,7 @@ export default function Consumos() {
     Ingreso: ['Salario FL', 'Salario GM', 'Otro ingreso'],
     Casa: [
       'Comida y aseo',
+      'Comidas afuera',
       'Extras Casa',
       'Medicinas',
       'Colegio Niñas',
