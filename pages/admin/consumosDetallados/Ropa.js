@@ -37,7 +37,7 @@ function reducer(state, action) {
       state;
   }
 }
-export default function CasaScreen() {
+export default function RopaScreen() {
   const [fecha, setFecha] = useState(new Date());
   const monthPlusOne = fecha.getMonth();
   const yearPlusOne = fecha.getFullYear();
@@ -103,19 +103,10 @@ export default function CasaScreen() {
           return (
             productMonth === selectedMonth &&
             productYear === selectedYear &&
-            (product.typeOfPurchase === 'Gas' ||
-              product.typeOfPurchase === 'Luz' ||
-              product.typeOfPurchase === 'Agua' ||
-              product.typeOfPurchase === 'Internet' ||
-              product.typeOfPurchase === 'Directv' ||
-              product.typeOfPurchase === 'Netflix' ||
-              product.typeOfPurchase === 'Celular GMG' ||
-              product.typeOfPurchase === 'Operacional GMG' ||
-              product.typeOfPurchase === 'Disney' ||
-              product.typeOfPurchase === 'YouTube')
+            (product.typeOfPurchase === 'Ropa pollos' ||
+              product.typeOfPurchase === 'Ropa Papás')
           );
         });
-
         filteredData.sort((a, b) => new Date(b.date) - new Date(a.date));
         dispatch({ type: 'FETCH_SUCCESS', payload: filteredData });
       } catch (err) {
