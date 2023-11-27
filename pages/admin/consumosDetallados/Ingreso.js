@@ -108,7 +108,9 @@ export default function IngresoScreen() {
               product.typeOfPurchase === 'Otro ingreso')
           );
         });
-
+        filteredData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         dispatch({ type: 'FETCH_SUCCESS', payload: filteredData });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });

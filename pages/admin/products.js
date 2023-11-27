@@ -71,6 +71,7 @@ export default function AdminProdcutsScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/admin/products`);
+        data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -195,15 +196,14 @@ export default function AdminProdcutsScreen() {
 export async function getServerSideProps() {
   await db.connect();
 
-  const products = await Product.find().sort({ createdAt: -1 }).lean();
+  const products = await Product.find().sort({ createdAt: 1 }).lean();
   const serializableProducts = products.map((product) => {
-    // Convert all Date objects to strings
     Object.keys(product).forEach((key) => {
       if (product[key] instanceof Date) {
         product[key] = product[key].toISOString();
       }
     });
-    // Convert Mongoose documents to plain objects
+
     return db.convertDocToObj(product);
   });
 
