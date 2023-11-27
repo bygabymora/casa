@@ -110,7 +110,7 @@ export default function AdminProductEditScreen() {
         date: dateObject,
       });
       dispatch({ type: 'UPDATE_SUCCESS' });
-      toast.success('Product updated successfully');
+      toast.success('Registro actualizado exitosamente.');
       router.push('/admin/products');
     } catch (err) {
       dispatch({ type: 'UPDATE_FAIL', payload: getError(err) });
