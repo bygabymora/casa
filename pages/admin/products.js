@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import Layout from '../../components/Layout';
 import { getError } from '../../utils/error';
@@ -37,11 +37,31 @@ function reducer(state, action) {
       state;
   }
 }
-export default function AdminProdcutsScreen() {
+export default function CasaScreen() {
+  const [fecha, setFecha] = useState(new Date());
+  const monthPlusOne = fecha.getMonth();
+  const yearPlusOne = fecha.getFullYear();
+
+  const fechaPlusOneMonth = new Date(
+    Date.UTC(yearPlusOne, monthPlusOne, 1, 0, 0, 0, 0)
+  );
+
+  const handleDateChange = (e) => {
+    const changedDate = new Date(e.target.value);
+
+    const month = changedDate.getUTCMonth();
+    const year = changedDate.getUTCFullYear();
+    const updatedDate = new Date(year, month, 1, 0, 0, 0, 0);
+    setFecha(updatedDate);
+    console.log({ updatedDate });
+  };
+
   const router = useRouter();
+
   const formatNumberWithDots = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
+
   const [
     { loading, error, products, loadingCreate, successDelete, loadingDelete },
     dispatch,
@@ -71,8 +91,23 @@ export default function AdminProdcutsScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/admin/products`);
-        data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+
+        const selectedMonth = fecha.getUTCMonth();
+        const selectedYear = fecha.getUTCFullYear();
+
+        const filteredData = data.filter((product) => {
+          const productDate = new Date(product.date);
+          const productMonth = productDate.getUTCMonth();
+          const productYear = productDate.getUTCFullYear();
+
+          return productMonth === selectedMonth && productYear === selectedYear;
+        });
+
+        // Ordenar los datos filtrados en orden descendente por fecha de creación
+        filteredData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        dispatch({ type: 'FETCH_SUCCESS', payload: filteredData });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -83,7 +118,7 @@ export default function AdminProdcutsScreen() {
     } else {
       fetchData();
     }
-  }, [successDelete]);
+  }, [fecha, successDelete]);
 
   const deleteHandler = async (productId) => {
     if (!window.confirm('ESTÁ SEGURO?')) {
@@ -121,6 +156,13 @@ export default function AdminProdcutsScreen() {
               <Link href="/admin/users">Usuarios</Link>
             </li>
           </ul>
+        </div>
+        <div>
+          <input
+            type="month"
+            value={fechaPlusOneMonth.toISOString().substring(0, 7)}
+            onChange={handleDateChange}
+          />
         </div>
         <div className="overflow-x-auto md:col-span-3">
           <div className="flex justify-between">
