@@ -135,7 +135,7 @@ export default function Consumos() {
               {aggregatedSums.map(({ mainCategory, totalSum }) => (
                 <div key={mainCategory} className="card p-2 text-center">
                   <Link
-                    href={`/admin/consumosDetallados/${mainCategory}`}
+                    href={`/admin/consumos/${mainCategory}`}
                     className="flex flex-col items-center justify-center"
                   >
                     <div className=" p-2 border-b border-gray-300 mb-2 font-bold">
