@@ -82,7 +82,7 @@ const SignupButton = () => {
 
                   <Menu.Item>
                     <div>
-                      <DropdownLink href="/">
+                      <DropdownLink href="/admin/dashboard">
                         <div className="ml-2">Dashboard</div>
                       </DropdownLink>
                     </div>

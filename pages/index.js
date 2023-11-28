@@ -76,7 +76,7 @@ export default function Home() {
           {loadingCreate ? 'Loading' : 'Crear Registro'}
         </button>
         <Link
-          href="/"
+          href="/admin/dashboard"
           className="primary-button align-middle text-center w-[70%]"
         >
           Dashboard
