@@ -212,12 +212,15 @@ export default function AdminProductEditScreen() {
                     <option value="Mantenimiento">Mantenimiento</option>
                     <option value="Lavado">Lavado</option>
                     <option value="Parqueadero">Parqueadero</option>
+                    <option value="Peajes">Peajes</option>
+                    <option value="Papeles">Papeles</option>
                   </optgroup>
 
                   <optgroup label="Categoría Ocio">
                     <option value="Ocio General">Ocio General</option>
                     <option value="Viajes">Viajes</option>
                     <option value="Cumpleaños">Cumpleaños</option>
+                    <option value="Comidas afuera">Comidas afuera</option>
                   </optgroup>
 
                   <optgroup label="Categoría Ropa">

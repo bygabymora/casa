@@ -32,7 +32,7 @@ const postHandler = async (req, res) => {
   const newSlug = `${newSlugNumber}`;
 
   const newProduct = new Product({
-    name: '.',
+    name: 'N/A',
     slug: newSlug,
     store: '.',
     value: 0,
