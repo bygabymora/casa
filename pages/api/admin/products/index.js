@@ -65,8 +65,12 @@ const getHandler = async (req, res) => {
         },
       },
     ]);
+    const mesadaRafaela =
+      consumos.find((item) => item._id === 'Mesada Rafaela')?.totalValue || 0;
+    const mesadaMartina =
+      consumos.find((item) => item._id === 'Mesada Martina')?.totalValue || 0;
     await db.disconnect();
-    res.send(consumos);
+    res.send({ consumos, mesadaRafaela, mesadaMartina });
   } else if (action === 'aggregatePaymentType') {
     const exclusionTypes = ['Salario FL', 'Salario GM', 'Otro ingreso'];
 

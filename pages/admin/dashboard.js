@@ -12,6 +12,11 @@ export default function Dashboard() {
   const formatNumberWithDots = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
+  const [mesadaRafaela, setMesadaRafaela] = useState(100000);
+  const [mesadaMartina, setMesadaMartina] = useState(100000);
+  const [mesadaRafaelaTotal, setMesadaRafaelaTotal] = useState(0);
+  const [mesadaMartinaTotal, setMesadaMartinaTotal] = useState(0);
+
   const monthPlusOne = fecha.getMonth();
   const yearPlusOne = fecha.getFullYear();
 
@@ -32,35 +37,58 @@ export default function Dashboard() {
     const year = fecha.getFullYear();
 
     const fetchData = async () => {
-      // Obtener los ingresos
-      const ingresosResult = await axios(
-        `/api/admin/products?action=aggregateTypeOfPurchase&month=${month}&year=${year}`
-      );
-      const totalIngresos = ingresosResult.data
-        .filter(
-          (item) =>
-            item._id === 'Salario FL' ||
-            item._id === 'Salario GM' ||
-            item._id === 'Otro ingreso'
-        )
-        .reduce((sum, item) => sum + item.totalValue, 0);
+      try {
+        // Obtener los ingresos y consumos
+        const ingresosResponse = await axios(
+          `/api/admin/products?action=aggregateTypeOfPurchase&month=${month}&year=${year}`
+        );
+        const consumosResponse = await axios(
+          `/api/admin/products?action=aggregatePaymentType&month=${month}&year=${year}`
+        );
 
-      // Obtener los consumos
-      const consumosResult = await axios(
-        `/api/admin/products?action=aggregatePaymentType&month=${month}&year=${year}`
-      );
-      const totalConsumos = consumosResult.data.reduce(
-        (sum, item) => sum + item.totalValue,
-        0
-      );
+        let totalIngresos = 0;
+        let totalConsumos = 0;
+        let mesadaRafaelaTotal = 0;
+        let mesadaMartinaTotal = 0;
 
-      // Calcular el balance
-      const balance = totalIngresos - totalConsumos;
+        // Verificar que las respuestas son arrays
+        if (Array.isArray(ingresosResponse.data)) {
+          totalIngresos = ingresosResponse.data
+            .filter(
+              (item) =>
+                item._id === 'Salario FL' ||
+                item._id === 'Salario GM' ||
+                item._id === 'Otro ingreso'
+            )
+            .reduce((sum, item) => sum + item.totalValue, 0);
 
-      // Actualizar estados
-      setTotalIngresos(totalIngresos);
-      setTotalConsumos(totalConsumos);
-      setBalance(balance);
+          mesadaRafaelaTotal =
+            ingresosResponse.data.find((item) => item._id === 'Mesada Rafaela')
+              ?.totalValue || 0;
+          mesadaMartinaTotal =
+            ingresosResponse.data.find((item) => item._id === 'Mesada Martina')
+              ?.totalValue || 0;
+        }
+
+        if (Array.isArray(consumosResponse.data)) {
+          totalConsumos = consumosResponse.data.reduce(
+            (sum, item) => sum + item.totalValue,
+            0
+          );
+        }
+
+        // Calcular y establecer los estados
+        const balance = totalIngresos - totalConsumos;
+        setTotalIngresos(totalIngresos);
+        setTotalConsumos(totalConsumos);
+        setBalance(balance);
+        setMesadaRafaela(100000 - mesadaRafaelaTotal);
+        setMesadaMartina(100000 - mesadaMartinaTotal);
+        setMesadaRafaelaTotal(mesadaRafaelaTotal);
+        setMesadaMartinaTotal(mesadaMartinaTotal);
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+      }
     };
 
     fetchData();
@@ -103,12 +131,30 @@ export default function Dashboard() {
             <br />
 
             <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
-              <div className="mt-4">
+              <div className="card p-2 text-center">
                 <h2 className="text-xl font-bold">Resumen Financiero</h2>
                 <p>Total Ingresos: ${formatNumberWithDots(totalIngresos)}</p>
                 <p>Total Consumos: ${formatNumberWithDots(totalConsumos)}</p>
 
                 <p>Balance: ${formatNumberWithDots(balance)}</p>
+              </div>
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">Mesada Rafa</h2>
+                <p>Inicial: ${formatNumberWithDots(100000)}</p>
+                <p>
+                  Total Consumos: ${formatNumberWithDots(mesadaRafaelaTotal)}
+                </p>
+
+                <p>Balance: ${formatNumberWithDots(mesadaRafaela)}</p>
+              </div>
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">Mesada Marti</h2>
+                <p>Inicial: ${formatNumberWithDots(100000)}</p>
+                <p>
+                  Total Consumos: ${formatNumberWithDots(mesadaMartinaTotal)}
+                </p>
+
+                <p>Balance: ${formatNumberWithDots(mesadaMartina)}</p>
               </div>
             </div>
           </div>
