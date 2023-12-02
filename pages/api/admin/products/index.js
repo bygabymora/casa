@@ -65,10 +65,13 @@ const getHandler = async (req, res) => {
         },
       },
     ]);
+
+    // Enviar los datos de consumos junto con los totales de las mesadas
     const mesadaRafaela =
       consumos.find((item) => item._id === 'Mesada Rafaela')?.totalValue || 0;
     const mesadaMartina =
       consumos.find((item) => item._id === 'Mesada Martina')?.totalValue || 0;
+
     await db.disconnect();
     res.send({ consumos, mesadaRafaela, mesadaMartina });
   } else if (action === 'aggregatePaymentType') {

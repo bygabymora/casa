@@ -25,6 +25,9 @@ export default function Consumos() {
   };
 
   const formatNumberWithDots = (number) => {
+    if (number === undefined || number === null) {
+      return '0';
+    }
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
@@ -36,7 +39,7 @@ export default function Consumos() {
       const typeOfPurchaseResult = await axios(
         `/api/admin/products?action=aggregateTypeOfPurchase&month=${month}&year=${year}`
       );
-      setConsumos(typeOfPurchaseResult.data);
+      setConsumos(typeOfPurchaseResult.data.consumos || []);
 
       const paymentTypeResult = await axios(
         `/api/admin/products?action=aggregatePaymentType&month=${month}&year=${year}`

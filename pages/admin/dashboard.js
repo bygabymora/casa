@@ -8,7 +8,7 @@ export default function Dashboard() {
   const [fecha, setFecha] = useState(new Date());
   const [totalIngresos, setTotalIngresos] = useState(0);
   const [totalConsumos, setTotalConsumos] = useState(0);
-  const [balance, setBalance] = useState(0);
+
   const formatNumberWithDots = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
@@ -38,7 +38,6 @@ export default function Dashboard() {
 
     const fetchData = async () => {
       try {
-        // Obtener los ingresos y consumos
         const ingresosResponse = await axios(
           `/api/admin/products?action=aggregateTypeOfPurchase&month=${month}&year=${year}`
         );
@@ -46,46 +45,34 @@ export default function Dashboard() {
           `/api/admin/products?action=aggregatePaymentType&month=${month}&year=${year}`
         );
 
-        let totalIngresos = 0;
-        let totalConsumos = 0;
-        let mesadaRafaelaTotal = 0;
-        let mesadaMartinaTotal = 0;
+        // Asegúrate de que las respuestas son objetos con las propiedades esperadas
+        if (
+          ingresosResponse.data &&
+          typeof ingresosResponse.data === 'object'
+        ) {
+          const { consumos, mesadaRafaela, mesadaMartina } =
+            ingresosResponse.data;
 
-        // Verificar que las respuestas son arrays
-        if (Array.isArray(ingresosResponse.data)) {
-          totalIngresos = ingresosResponse.data
-            .filter(
-              (item) =>
-                item._id === 'Salario FL' ||
-                item._id === 'Salario GM' ||
-                item._id === 'Otro ingreso'
+          const totalIngresos = consumos
+            .filter((item) =>
+              ['Salario FL', 'Salario GM', 'Otro ingreso'].includes(item._id)
             )
             .reduce((sum, item) => sum + item.totalValue, 0);
 
-          mesadaRafaelaTotal =
-            ingresosResponse.data.find((item) => item._id === 'Mesada Rafaela')
-              ?.totalValue || 0;
-          mesadaMartinaTotal =
-            ingresosResponse.data.find((item) => item._id === 'Mesada Martina')
-              ?.totalValue || 0;
+          setMesadaRafaela(100000 - mesadaRafaela);
+          setMesadaMartina(100000 - mesadaMartina);
+          setMesadaRafaelaTotal(mesadaRafaela);
+          setMesadaMartinaTotal(mesadaMartina);
+          setTotalIngresos(totalIngresos);
         }
 
         if (Array.isArray(consumosResponse.data)) {
-          totalConsumos = consumosResponse.data.reduce(
+          const totalConsumos = consumosResponse.data.reduce(
             (sum, item) => sum + item.totalValue,
             0
           );
+          setTotalConsumos(totalConsumos);
         }
-
-        // Calcular y establecer los estados
-        const balance = totalIngresos - totalConsumos;
-        setTotalIngresos(totalIngresos);
-        setTotalConsumos(totalConsumos);
-        setBalance(balance);
-        setMesadaRafaela(100000 - mesadaRafaelaTotal);
-        setMesadaMartina(100000 - mesadaMartinaTotal);
-        setMesadaRafaelaTotal(mesadaRafaelaTotal);
-        setMesadaMartinaTotal(mesadaMartinaTotal);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
       }
@@ -136,7 +123,10 @@ export default function Dashboard() {
                 <p>Total Ingresos: ${formatNumberWithDots(totalIngresos)}</p>
                 <p>Total Consumos: ${formatNumberWithDots(totalConsumos)}</p>
 
-                <p>Balance: ${formatNumberWithDots(balance)}</p>
+                <p>
+                  Balance: $
+                  {formatNumberWithDots(totalIngresos - totalConsumos)}
+                </p>
               </div>
               <div className="card p-2 text-center">
                 <h2 className="text-xl font-bold">Mesada Rafa</h2>
