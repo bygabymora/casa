@@ -58,7 +58,8 @@ export default function Consumos() {
       'Clases Pollos',
       'Arriendo Casa',
       'Administración',
-      'Mesada Pollos',
+      'Mesada Martina',
+      'Mesada Rafaela',
     ],
     'Servicios Públicos': [
       'Gas',

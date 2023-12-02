@@ -99,11 +99,9 @@ export default function Dashboard() {
           </div>
 
           <div className="mb-3">
-            <h1 className="text-2xl font-bold border-b border-gray-300">
-              Por Categoria
-              <BsSpeedometer />
-              <br />
-            </h1>
+            <BsSpeedometer />
+            <br />
+
             <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
               <div className="mt-4">
                 <h2 className="text-xl font-bold">Resumen Financiero</h2>
