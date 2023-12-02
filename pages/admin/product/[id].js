@@ -187,6 +187,7 @@ export default function AdminProductEditScreen() {
                     <option value="Comida y aseo">Comida y aseo</option>
                     <option value="Extras Casa">Extras Casa</option>
                     <option value="Medicinas">Medicinas</option>
+                    <option value="Mesada Pollos">Mesada Pollos</option>
                     <option value="Colegio Niñas">Colegio Niñas</option>
                     <option value="María">María</option>
                     <option value="Clases Pollos">Clases Pollos</option>

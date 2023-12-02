@@ -58,6 +58,7 @@ export default function Consumos() {
       'Clases Pollos',
       'Arriendo Casa',
       'Administración',
+      'Mesada Pollos',
     ],
     'Servicios Públicos': [
       'Gas',
