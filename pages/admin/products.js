@@ -196,7 +196,7 @@ export default function CasaScreen() {
                   {products.map((product) => (
                     <tr key={product._id} className="border-b">
                       <td className=" p-2 border-r border-gray-300">
-                        {product.purchaseType}
+                        {product.typeOfPurchase}
                       </td>
                       <td className=" p-2 ">
                         ${formatNumberWithDots(product.value)}
