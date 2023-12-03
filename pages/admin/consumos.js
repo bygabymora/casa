@@ -64,7 +64,7 @@ export default function Consumos() {
       'Mesada Martina',
       'Mesada Rafaela',
     ],
-    'Servicios Públicos': [
+    Servicios: [
       'Gas',
       'Luz',
       'Agua',

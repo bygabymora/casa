@@ -106,7 +106,9 @@ export default function CarroScreen() {
             (product.typeOfPurchase === 'Gasolina' ||
               product.typeOfPurchase === 'Mantenimiento' ||
               product.typeOfPurchase === 'Lavado' ||
-              product.typeOfPurchase === 'Parqueadero')
+              product.typeOfPurchase === 'Parqueadero' ||
+              product.typeOfPurchase === 'Peajes' ||
+              product.typeOfPurchase === 'Papeles')
           );
         });
         filteredData.sort((a, b) => new Date(b.date) - new Date(a.date));

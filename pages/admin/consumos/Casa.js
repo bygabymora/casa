@@ -110,9 +110,12 @@ export default function CasaScreen() {
               product.typeOfPurchase === 'María' ||
               product.typeOfPurchase === 'Clases Pollos' ||
               product.typeOfPurchase === 'Arriendo Casa' ||
-              product.typeOfPurchase === 'Administración')
+              product.typeOfPurchase === 'Administración' ||
+              product.typeOfPurchase === 'Mesada Martina' ||
+              product.typeOfPurchase === 'Mesada Rafaela')
           );
         });
+
         filteredData.sort((a, b) => new Date(b.date) - new Date(a.date));
         dispatch({ type: 'FETCH_SUCCESS', payload: filteredData });
       } catch (err) {
