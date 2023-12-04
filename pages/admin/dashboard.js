@@ -141,7 +141,7 @@ export default function Dashboard() {
                   Total Consumos: ${formatNumberWithDots(mesadaRafaelaTotal)}
                 </p>
 
-                <p>Balance: ${formatNumberWithDots(mesadaRafaela)}</p>
+                <p>Disponible: ${formatNumberWithDots(mesadaRafaela)}</p>
               </div>
               <div className="card p-2 text-center">
                 <h2 className="text-xl font-bold">Mesada Marti</h2>
@@ -150,7 +150,7 @@ export default function Dashboard() {
                   Total Consumos: ${formatNumberWithDots(mesadaMartinaTotal)}
                 </p>
 
-                <p>Balance: ${formatNumberWithDots(mesadaMartina)}</p>
+                <p>Disponible: ${formatNumberWithDots(mesadaMartina)}</p>
               </div>
               <div className="card p-2 text-center">
                 <h2 className="text-xl font-bold">Tope de consumo Master</h2>
@@ -160,7 +160,7 @@ export default function Dashboard() {
                 </p>
 
                 <p>
-                  Balance: $
+                  Disponible: $
                   {formatNumberWithDots(12000000 - totalConsumosTCMaster)}
                 </p>
               </div>
