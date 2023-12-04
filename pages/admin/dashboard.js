@@ -8,6 +8,7 @@ export default function Dashboard() {
   const [fecha, setFecha] = useState(new Date());
   const [totalIngresos, setTotalIngresos] = useState(0);
   const [totalConsumos, setTotalConsumos] = useState(0);
+  const [totalConsumosTCMaster, setTotalConsumosTCMaster] = useState(0);
 
   const formatNumberWithDots = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -45,7 +46,7 @@ export default function Dashboard() {
           `/api/admin/products?action=aggregatePaymentType&month=${month}&year=${year}`
         );
 
-        // Asegúrate de que las respuestas son objetos con las propiedades esperadas
+        // Extraer los valores necesarios de la respuesta
         if (
           ingresosResponse.data &&
           typeof ingresosResponse.data === 'object'
@@ -71,7 +72,12 @@ export default function Dashboard() {
             (sum, item) => sum + item.totalValue,
             0
           );
+          const consumosTCMaster =
+            consumosResponse.data.find((item) => item._id === 'TC Master')
+              ?.totalValue || 0;
+
           setTotalConsumos(totalConsumos);
+          setTotalConsumosTCMaster(consumosTCMaster);
         }
       } catch (error) {
         console.error('Error al obtener los datos:', error);
@@ -145,6 +151,18 @@ export default function Dashboard() {
                 </p>
 
                 <p>Balance: ${formatNumberWithDots(mesadaMartina)}</p>
+              </div>
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">Tope de consumo Master</h2>
+                <p>Tope: ${formatNumberWithDots(12000000)}</p>
+                <p>
+                  Total Consumos: ${formatNumberWithDots(totalConsumosTCMaster)}
+                </p>
+
+                <p>
+                  Balance: $
+                  {formatNumberWithDots(12000000 - totalConsumosTCMaster)}
+                </p>
               </div>
             </div>
           </div>

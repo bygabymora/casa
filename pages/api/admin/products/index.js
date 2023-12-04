@@ -91,8 +91,12 @@ const getHandler = async (req, res) => {
         },
       },
     ]);
+
+    const consumosTCMaster =
+      consumos.find((item) => item._id === 'TC Master')?.totalValue || 0;
+
     await db.disconnect();
-    res.send(consumos);
+    res.send(consumos, consumosTCMaster);
   } else {
     // Else, return the list of products
     const products = await Product.find({});
