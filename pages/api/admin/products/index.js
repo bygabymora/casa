@@ -30,7 +30,8 @@ const postHandler = async (req, res) => {
 
   // Construct new slug
   const newSlug = `${newSlugNumber}`;
-
+  const eightHoursInMilliseconds = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+  const newDate = new Date(Date.now() + eightHoursInMilliseconds);
   const newProduct = new Product({
     name: 'N/A',
     slug: newSlug,
@@ -39,7 +40,7 @@ const postHandler = async (req, res) => {
     paymentType: 'TC Master',
     typeOfPurchase: '.',
     notes: 'Nada',
-    date: Date.now(),
+    date: newDate,
   });
 
   const product = await newProduct.save();
