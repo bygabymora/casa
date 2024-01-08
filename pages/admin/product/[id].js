@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Layout from '../../../components/Layout';
@@ -45,13 +45,107 @@ export default function AdminProductEditScreen() {
     loading: true,
     error: '',
   });
-
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
     setValue,
   } = useForm();
+
+  const [totalSpent, setTotalSpent] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(0);
+  const typeOfPurchase = watch('typeOfPurchase');
+  const fetchTotalSpent = async (typeOfPurchase) => {
+    try {
+      const { data } = await axios.get(
+        `/api/totalSpent?typeOfPurchase=${typeOfPurchase}`
+      );
+      setTotalSpent(data.totalSpent);
+    } catch (error) {
+      console.error('Error fetching total spent', error);
+    }
+  };
+  const formatNumberWithDots = (number) => {
+    if (number === undefined || number === null) {
+      return '0';
+    }
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
+  useEffect(() => {
+    switch (typeOfPurchase) {
+      case 'Comida y aseo':
+        setMaxAmount(3000000);
+        break;
+      case 'Extras Casa':
+        setMaxAmount(1000000);
+        break;
+      case 'Medicinas':
+        setMaxAmount(500000);
+        break;
+      case 'Mesada Martina':
+        setMaxAmount(100000);
+        break;
+      case 'Mesada Rafaela':
+        setMaxAmount(100000);
+        break;
+      case 'Clases Pollos':
+        setMaxAmount(370000);
+        break;
+      case 'Gasolina':
+        setMaxAmount(880000);
+        break;
+      case 'Mantenimiento':
+        setMaxAmount(200000);
+        break;
+      case 'Lavado':
+        setMaxAmount(80000);
+        break;
+      case 'Parqueadero':
+        setMaxAmount(50000);
+        break;
+      case 'Peajes':
+        setMaxAmount(100000);
+        break;
+      case 'Papeles':
+        setMaxAmount(100000);
+        break;
+      case 'Ocio General':
+        setMaxAmount(500000);
+        break;
+      case 'Viajes':
+        setMaxAmount(400000);
+        break;
+      case 'Cumpleaños':
+        setMaxAmount(400000);
+        break;
+      case 'Comidas afuera':
+        setMaxAmount(800000);
+        break;
+      case 'Ropa Pollos':
+        setMaxAmount(250000);
+        break;
+      case 'Ropa Papás':
+        setMaxAmount(250000);
+        break;
+      case 'Comida Perros':
+        setMaxAmount(300000);
+        break;
+      case 'Guardería Perros':
+        setMaxAmount(200000);
+        break;
+      case 'Medicina Perros':
+        setMaxAmount(100000);
+        break;
+      default:
+        setMaxAmount(0);
+    }
+
+    if (typeOfPurchase) {
+      fetchTotalSpent(typeOfPurchase);
+    }
+  }, [typeOfPurchase]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,6 +178,14 @@ export default function AdminProductEditScreen() {
     fetchData();
   }, [productId, setValue]);
 
+  useEffect(() => {
+    if (typeOfPurchase) {
+      fetchTotalSpent(typeOfPurchase);
+    }
+  }, [typeOfPurchase]);
+
+  const remaining = maxAmount - totalSpent;
+
   const router = useRouter();
 
   const submitHandler = async ({
@@ -92,22 +194,26 @@ export default function AdminProductEditScreen() {
     store,
     value,
     paymentType,
-    typeOfPurchase,
+    typeOfPurchase: typeOf,
     notes,
     date,
   }) => {
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       const dateObject = new Date(date);
+      console.log({ dateObject });
+      dateObject.setHours(dateObject.getHours() - 5);
+      const adjustedDate = dateObject.toISOString();
+      console.log({ adjustedDate });
       await axios.put(`/api/admin/products/${productId}`, {
         name,
         slug,
         store,
         value,
         paymentType,
-        typeOfPurchase,
+        typeOfPurchase: typeOf,
         notes,
-        date: dateObject,
+        date: adjustedDate,
       });
       dispatch({ type: 'UPDATE_SUCCESS' });
       toast.success('Registro actualizado exitosamente.');
@@ -173,6 +279,7 @@ export default function AdminProductEditScreen() {
                 <select
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   id="typeOfPurchase"
+                  value={typeOfPurchase}
                   {...register('typeOfPurchase', {
                     required: 'Por favor seleccione un tipo de compra',
                   })}
@@ -254,6 +361,7 @@ export default function AdminProductEditScreen() {
                     <option value="Pago TC Bancolombia">
                       Pago TC Bancolombia
                     </option>
+                    <option value="Apto. Cartagena">Apto. Cartagena</option>
                   </optgroup>
                 </select>
                 {errors.typeOfPurchase && (
@@ -305,6 +413,20 @@ export default function AdminProductEditScreen() {
                 />
                 {errors.value && (
                   <div className="text-red-500">{errors.value.message}</div>
+                )}
+                {maxAmount > 0 && remaining >= 0 && (
+                  <div className="text-green-700">
+                    Valor Máximo a gastar: ${formatNumberWithDots(maxAmount)}
+                    <br />
+                    Restante: ${formatNumberWithDots(remaining)}
+                  </div>
+                )}
+                {maxAmount > 0 && remaining < 0 && (
+                  <div className="text-red-700">
+                    Valor Máximo a gastar: ${formatNumberWithDots(maxAmount)}
+                    <br />
+                    Restante: ${formatNumberWithDots(remaining)}
+                  </div>
                 )}
               </div>
               <div className="mb-4">

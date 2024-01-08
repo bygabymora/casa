@@ -32,6 +32,7 @@ const postHandler = async (req, res) => {
   const newSlug = `${newSlugNumber}`;
   const fiveHoursInMilliseconds = 5 * 60 * 60 * 999; // 5 hours in milliseconds
   const newDate = new Date(Date.now() - fiveHoursInMilliseconds);
+  console.log('New date: ', newDate);
   const newProduct = new Product({
     name: 'N/A',
     slug: newSlug,

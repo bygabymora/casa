@@ -94,6 +94,7 @@ export default function Consumos() {
       'Pago TC Master',
       'Pago TC Visa',
       'Pago TC Bancolombia',
+      'Apto. Cartagena',
     ],
   };
 
@@ -137,6 +138,19 @@ export default function Consumos() {
               value={fechaPlusOneMonth.toISOString().substring(0, 7)}
               onChange={handleDateChange}
             />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold border-b border-gray-300">
+              Presupuesto disponible
+            </h1>
+            <div>
+              <div>
+                <h1 className="text-2xl font-bold border-b border-gray-300">
+                  Comiday aseo
+                </h1>
+                <div></div>
+              </div>
+            </div>
           </div>
 
           <div className="mb-3">

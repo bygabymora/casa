@@ -107,7 +107,8 @@ export default function ObFinancierasScreen() {
               product.typeOfPurchase === 'Crédito Banco Bogotá' ||
               product.typeOfPurchase === 'Pago TC Master' ||
               product.typeOfPurchase === 'Pago TC Visa' ||
-              product.typeOfPurchase === 'Pago TC Bancolombia')
+              product.typeOfPurchase === 'Pago TC Bancolombia' ||
+              product.typeOfPurchase === 'Apto. Cartagena')
           );
         });
 
