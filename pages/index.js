@@ -203,7 +203,7 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-2 ">
-        <div className="card  text-center">
+        <div className="w-full px-3 py-2 my-2 leading-tight border rounded shadow  text-center">
           <h2 className="text-lg font-bold">Resumen </h2>
           <p>In: ${formatNumberWithDots(totalIngresos)}</p>
           <p>Out: ${formatNumberWithDots(totalConsumos)}</p>
@@ -213,7 +213,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="card  text-center">
+        <div className="w-full px-3 py-2 my-2 leading-tight border rounded shadow  text-center">
           <h2 className="text-xl font-bold">TC Master</h2>
           <p>Tope: ${formatNumberWithDots(12000000)}</p>
           <p>Out: ${formatNumberWithDots(totalConsumosTCMaster)}</p>
@@ -222,7 +222,7 @@ export default function Home() {
             Saldo: ${formatNumberWithDots(12000000 - totalConsumosTCMaster)}
           </p>
         </div>
-        <div className="card  text-center">
+        <div className="w-full px-3 py-2 my-2 leading-tight border rounded shadow  text-center">
           <h2 className="text-lg font-bold">Rafa</h2>
           <p>In: ${formatNumberWithDots(100000)}</p>
           <p>Out: ${formatNumberWithDots(mesadaRafaelaTotal)}</p>
@@ -231,7 +231,7 @@ export default function Home() {
             Saldo: ${formatNumberWithDots(mesadaRafaela)}
           </p>
         </div>
-        <div className="card  text-center">
+        <div className="w-full px-3 py-2 my-2 leading-tight border rounded shadow text-center">
           <h2 className="text-xl font-bold">Marti</h2>
           <p>In: ${formatNumberWithDots(100000)}</p>
           <p>Out: ${formatNumberWithDots(mesadaMartinaTotal)}</p>
