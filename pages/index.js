@@ -184,19 +184,19 @@ export default function Home() {
         <button
           disabled={loadingCreate}
           onClick={createHandler}
-          className="primary-button text-sm align-middle  w-[90%] "
+          className="primary-button text-sm align-middle  w-[100%] "
         >
           {loadingCreate ? 'Loading' : 'Crear'}
         </button>
         <Link
           href="/admin/dashboard"
-          className="primary-button align-middle  text-sm text-center w-[90%]"
+          className="primary-button align-middle  text-xs text-center w-[100%]"
         >
           Dashboard
         </Link>
         <Link
           href="/admin/products"
-          className="primary-button align-middle  text-sm text-center w-[90%]"
+          className="primary-button align-middle  text-sm text-center w-[100%]"
         >
           Registros
         </Link>
