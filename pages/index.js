@@ -114,29 +114,129 @@ export default function Home() {
     }
   }, [successDelete]);
 
+  const [totalIngresos, setTotalIngresos] = useState(0);
+  const [totalConsumos, setTotalConsumos] = useState(0);
+  const [totalConsumosTCMaster, setTotalConsumosTCMaster] = useState(0);
+
+  const [mesadaRafaela, setMesadaRafaela] = useState(100000);
+  const [mesadaMartina, setMesadaMartina] = useState(100000);
+  const [mesadaRafaelaTotal, setMesadaRafaelaTotal] = useState(0);
+  const [mesadaMartinaTotal, setMesadaMartinaTotal] = useState(0);
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
+
+    const fetchData = async () => {
+      try {
+        const ingresosResponse = await axios(
+          `/api/admin/products?action=aggregateTypeOfPurchase&month=${month}&year=${year}`
+        );
+        const consumosResponse = await axios(
+          `/api/admin/products?action=aggregatePaymentType&month=${month}&year=${year}`
+        );
+
+        // Extraer los valores necesarios de la respuesta
+        if (
+          ingresosResponse.data &&
+          typeof ingresosResponse.data === 'object'
+        ) {
+          const { consumos, mesadaRafaela, mesadaMartina } =
+            ingresosResponse.data;
+
+          const totalIngresos = consumos
+            .filter((item) =>
+              ['Salario FL', 'Salario GM', 'Otro ingreso'].includes(item._id)
+            )
+            .reduce((sum, item) => sum + item.totalValue, 0);
+
+          setMesadaRafaela(100000 - mesadaRafaela);
+          setMesadaMartina(100000 - mesadaMartina);
+          setMesadaRafaelaTotal(mesadaRafaela);
+          setMesadaMartinaTotal(mesadaMartina);
+          setTotalIngresos(totalIngresos);
+        }
+
+        if (Array.isArray(consumosResponse.data)) {
+          const totalConsumos = consumosResponse.data.reduce(
+            (sum, item) => sum + item.totalValue,
+            0
+          );
+          const consumosTCMaster =
+            consumosResponse.data.find((item) => item._id === 'TC Master')
+              ?.totalValue || 0;
+
+          setTotalConsumos(totalConsumos);
+          setTotalConsumosTCMaster(consumosTCMaster);
+        }
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Layout title="Home Page">
-      <div className="grid grid-cols-3 my-10">
+      <div className="grid grid-cols-3 items-center justify-items-center mt-3">
         <button
           disabled={loadingCreate}
           onClick={createHandler}
-          className="primary-button align-middle  w-[70%]"
+          className="primary-button text-sm align-middle  w-[90%] "
         >
-          {loadingCreate ? 'Loading' : 'Crear Registro'}
+          {loadingCreate ? 'Loading' : 'Crear'}
         </button>
         <Link
           href="/admin/dashboard"
-          className="primary-button align-middle text-center w-[70%]"
+          className="primary-button align-middle  text-sm text-center w-[90%]"
         >
           Dashboard
         </Link>
         <Link
           href="/admin/products"
-          className="primary-button align-middle text-center w-[70%]"
+          className="primary-button align-middle  text-sm text-center w-[90%]"
         >
-          Registros anteriores
+          Registros
         </Link>
       </div>
+
+      <div className="grid grid-cols-2 ">
+        <div className="card  text-center">
+          <h2 className="text-lg font-bold">Resumen </h2>
+          <p>In: ${formatNumberWithDots(totalIngresos)}</p>
+          <p>Out: ${formatNumberWithDots(totalConsumos)}</p>
+
+          <p>Balance: ${formatNumberWithDots(totalIngresos - totalConsumos)}</p>
+        </div>
+
+        <div className="card  text-center">
+          <h2 className="text-xl font-bold">TC Master</h2>
+          <p>Tope: ${formatNumberWithDots(12000000)}</p>
+          <p>Out: ${formatNumberWithDots(totalConsumosTCMaster)}</p>
+
+          <p>
+            Disponible: $
+            {formatNumberWithDots(12000000 - totalConsumosTCMaster)}
+          </p>
+        </div>
+        <div className="card  text-center">
+          <h2 className="text-lg font-bold">Rafa</h2>
+          <p>In: ${formatNumberWithDots(100000)}</p>
+          <p>Out: ${formatNumberWithDots(mesadaRafaelaTotal)}</p>
+
+          <p>Disponible: ${formatNumberWithDots(mesadaRafaela)}</p>
+        </div>
+        <div className="card  text-center">
+          <h2 className="text-xl font-bold">Marti</h2>
+          <p>In: ${formatNumberWithDots(100000)}</p>
+          <p>Out: ${formatNumberWithDots(mesadaMartinaTotal)}</p>
+
+          <p>Disponible: ${formatNumberWithDots(mesadaMartina)}</p>
+        </div>
+      </div>
+
       <div>
         <h1 className="text-2xl my-3 font-bold border-b border-gray-300">
           Presupuesto disponible
@@ -157,15 +257,15 @@ export default function Home() {
                       <br />
                       {budget.maxAmount - budget.spent < 0 && (
                         <div className="text-red-500">
-                          <span className="font-bold">Restante:</span> $
+                          <span className="font-bold">Disponible:</span> $
                           {formatNumberWithDots(
                             budget.maxAmount - budget.spent
                           )}
                         </div>
                       )}
                       {budget.maxAmount - budget.spent > 0 && (
-                        <div>
-                          <span className="font-bold">Restante:</span> $
+                        <div className="text-green-700">
+                          <span className="font-bold">Disponible:</span> $
                           {formatNumberWithDots(
                             budget.maxAmount - budget.spent
                           )}
