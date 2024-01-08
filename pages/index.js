@@ -208,7 +208,9 @@ export default function Home() {
           <p>In: ${formatNumberWithDots(totalIngresos)}</p>
           <p>Out: ${formatNumberWithDots(totalConsumos)}</p>
 
-          <p>Balance: ${formatNumberWithDots(totalIngresos - totalConsumos)}</p>
+          <p className="font-bold">
+            Balance: ${formatNumberWithDots(totalIngresos - totalConsumos)}
+          </p>
         </div>
 
         <div className="card  text-center">
@@ -216,9 +218,8 @@ export default function Home() {
           <p>Tope: ${formatNumberWithDots(12000000)}</p>
           <p>Out: ${formatNumberWithDots(totalConsumosTCMaster)}</p>
 
-          <p>
-            Disponible: $
-            {formatNumberWithDots(12000000 - totalConsumosTCMaster)}
+          <p className="font-bold">
+            Saldo: ${formatNumberWithDots(12000000 - totalConsumosTCMaster)}
           </p>
         </div>
         <div className="card  text-center">
@@ -226,14 +227,18 @@ export default function Home() {
           <p>In: ${formatNumberWithDots(100000)}</p>
           <p>Out: ${formatNumberWithDots(mesadaRafaelaTotal)}</p>
 
-          <p>Disponible: ${formatNumberWithDots(mesadaRafaela)}</p>
+          <p className="font-bold">
+            Saldo: ${formatNumberWithDots(mesadaRafaela)}
+          </p>
         </div>
         <div className="card  text-center">
           <h2 className="text-xl font-bold">Marti</h2>
           <p>In: ${formatNumberWithDots(100000)}</p>
           <p>Out: ${formatNumberWithDots(mesadaMartinaTotal)}</p>
 
-          <p>Disponible: ${formatNumberWithDots(mesadaMartina)}</p>
+          <p className="font-bold">
+            Saldo: ${formatNumberWithDots(mesadaMartina)}
+          </p>
         </div>
       </div>
 
