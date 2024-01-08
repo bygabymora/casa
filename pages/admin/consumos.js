@@ -189,14 +189,27 @@ export default function Consumos() {
                       <div key={category}>
                         <h2 className="text-xl font-bold">{category}</h2>
                         <p>
-                          Gastado: ${formatNumberWithDots(budget.spent)}
+                          <span className="font-bold">Gastado:</span> $
+                          {formatNumberWithDots(budget.spent)}
                           <br />
-                          Presupuesto Máximo: $
+                          <span className="font-bold">Máximo:</span> $
                           {formatNumberWithDots(budget.maxAmount)}
                           <br />
-                          Restante: $
-                          {formatNumberWithDots(
-                            budget.maxAmount - budget.spent
+                          {budget.maxAmount - budget.spent < 0 && (
+                            <div className="text-red-500">
+                              <span className="font-bold">Restante:</span> $
+                              {formatNumberWithDots(
+                                budget.maxAmount - budget.spent
+                              )}
+                            </div>
+                          )}
+                          {budget.maxAmount - budget.spent > 0 && (
+                            <div>
+                              <span className="font-bold">Restante:</span> $
+                              {formatNumberWithDots(
+                                budget.maxAmount - budget.spent
+                              )}
+                            </div>
                           )}
                         </p>
                       </div>
