@@ -247,12 +247,14 @@ export default function Home() {
           Presupuesto disponible
         </h1>
         <div>
-          <div className="grid grid-cols-3 mb-5">
+          <div className="grid grid-cols-3 mb-5 overflow-hidden">
             {Object.entries(categorySpent).map(([category, budget]) => (
               <div key={category}>
                 {categorySpent[category].maxAmount > 0 && (
                   <div key={category}>
-                    <h2 className="text-xl font-bold">{category}</h2>
+                    <h2 className="text-xl font-bold overflow-hidden">
+                      {category}
+                    </h2>
                     <p>
                       <span className="font-bold">Gastado:</span> $
                       {formatNumberWithDots(budget.spent)}
