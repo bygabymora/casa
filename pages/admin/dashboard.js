@@ -125,15 +125,29 @@ export default function Dashboard() {
 
             <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
               <div className="card p-2 text-center">
-                <h2 className="text-xl font-bold">Resumen Financiero</h2>
-                <p>Total Ingresos: ${formatNumberWithDots(totalIngresos)}</p>
-                <p>Total Consumos: ${formatNumberWithDots(totalConsumos)}</p>
-
-                <p>
-                  Balance: $
-                  {formatNumberWithDots(totalIngresos - totalConsumos)}
+                <h2 className="text-lg font-bold">Resumen </h2>
+                <p className="font-bold">
+                  In: ${formatNumberWithDots(totalIngresos)}
                 </p>
               </div>
+
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">TC Master</h2>
+
+                <p className="font-bold">
+                  Out: ${formatNumberWithDots(totalConsumosTCMaster)}
+                </p>
+              </div>
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">Efectivo</h2>
+
+                <p className="font-bold">
+                  Out: $
+                  {formatNumberWithDots(totalConsumos - totalConsumosTCMaster)}
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2">
               <div className="card p-2 text-center">
                 <h2 className="text-xl font-bold">Mesada Rafa</h2>
                 <p>Inicial: ${formatNumberWithDots(100000)}</p>
@@ -151,18 +165,6 @@ export default function Dashboard() {
                 </p>
 
                 <p>Disponible: ${formatNumberWithDots(mesadaMartina)}</p>
-              </div>
-              <div className="card p-2 text-center">
-                <h2 className="text-xl font-bold">Tope de consumo Master</h2>
-                <p>Tope: ${formatNumberWithDots(12000000)}</p>
-                <p>
-                  Total Consumos: ${formatNumberWithDots(totalConsumosTCMaster)}
-                </p>
-
-                <p>
-                  Disponible: $
-                  {formatNumberWithDots(12000000 - totalConsumosTCMaster)}
-                </p>
               </div>
             </div>
           </div>
