@@ -204,28 +204,50 @@ export default function Home() {
 
       <div className="grid grid-cols-2 ">
         <div className="w-full px-3 py-2 my-2 leading-tight border rounded shadow  text-center col-span-2">
-          <div className="grid grid-cols-3">
-            <div className="w-full px-3 py-2 my-2 leading-tight   text-center">
-              <h2 className="text-lg font-bold">Resumen </h2>
-              <p className="font-bold">
-                In: ${formatNumberWithDots(totalIngresos)}
-              </p>
+          <div className="mb-3">
+            <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
+              <div className="card p-2 text-center">
+                <h2 className="text-lg font-bold">Resumen </h2>
+                <p className="font-bold">
+                  In: ${formatNumberWithDots(totalIngresos)}
+                </p>
+              </div>
+
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">TC Master</h2>
+
+                <p className="font-bold">
+                  Out: ${formatNumberWithDots(totalConsumosTCMaster)}
+                </p>
+              </div>
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">Efectivo</h2>
+
+                <p className="font-bold">
+                  Out: $
+                  {formatNumberWithDots(totalConsumos - totalConsumosTCMaster)}
+                </p>
+              </div>
             </div>
+            <div className="grid grid-cols-2">
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">Mesada Rafa</h2>
+                <p>Inicial: ${formatNumberWithDots(100000)}</p>
+                <p>
+                  Total Consumos: ${formatNumberWithDots(mesadaRafaelaTotal)}
+                </p>
 
-            <div className="w-full px-3 py-2 my-2 leading-tight   text-center">
-              <h2 className="text-xl font-bold">TC Master</h2>
+                <p>Disponible: ${formatNumberWithDots(mesadaRafaela)}</p>
+              </div>
+              <div className="card p-2 text-center">
+                <h2 className="text-xl font-bold">Mesada Marti</h2>
+                <p>Inicial: ${formatNumberWithDots(100000)}</p>
+                <p>
+                  Total Consumos: ${formatNumberWithDots(mesadaMartinaTotal)}
+                </p>
 
-              <p className="font-bold">
-                Out: ${formatNumberWithDots(totalConsumosTCMaster)}
-              </p>
-            </div>
-            <div className="w-full px-3 py-2 my-2 leading-tight   text-center">
-              <h2 className="text-xl font-bold">Efectivo</h2>
-
-              <p className="font-bold">
-                Out: $
-                {formatNumberWithDots(totalConsumos - totalConsumosTCMaster)}
-              </p>
+                <p>Disponible: ${formatNumberWithDots(mesadaMartina)}</p>
+              </div>
             </div>
           </div>
         </div>

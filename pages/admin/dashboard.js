@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../../components/Layout';
 import Link from 'next/link';
-import { BsSpeedometer } from 'react-icons/bs';
 
 export default function Dashboard() {
   const [fecha, setFecha] = useState(new Date());
@@ -120,9 +119,6 @@ export default function Dashboard() {
           </div>
 
           <div className="mb-3">
-            <BsSpeedometer />
-            <br />
-
             <div className="grid grid-cols-1 gap-1 md:grid-cols-3">
               <div className="card p-2 text-center">
                 <h2 className="text-lg font-bold">Resumen </h2>
