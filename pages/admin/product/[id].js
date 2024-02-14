@@ -372,7 +372,7 @@ export default function AdminProductEditScreen() {
               </div>
               <div className="grid grid-cols-2">
                 <div className="mb-4">
-                  <label htmlFor="name">Nombre</label>
+                  <label htmlFor="name">Descripción</label>
                   <input
                     type="text"
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"

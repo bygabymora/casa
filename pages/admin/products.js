@@ -187,8 +187,8 @@ export default function CasaScreen() {
                     <th className="p-2 text-left border-r border-gray-300">
                       FECHA
                     </th>
-                    <th className="p-2 text-left ">TIPO DE REGISTRO</th>
-                    <th className="p-2 text-left">REGISTRO</th>
+
+                    <th className="p-2 text-left">DESCRIPCIÓN</th>
                     <th className="p-2 text-left">VALOR</th>
 
                     <th className="p-2 text-left">ACCIONES</th>
@@ -200,8 +200,15 @@ export default function CasaScreen() {
                       <td className=" p-2 border-r border-gray-300">
                         {product.date.substring(0, 10)}
                       </td>
-                      <td className=" p-2 ">{product.typeOfPurchase}</td>
-                      <td className=" p-2 ">{product.name}</td>
+
+                      <td className=" p-2 ">
+                        <span className="font-semibold">
+                          {product.typeOfPurchase}
+                        </span>
+
+                        <br />
+                        {product.name}
+                      </td>
                       <td className=" p-2 ">
                         ${formatNumberWithDots(product.value)}
                       </td>
