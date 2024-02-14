@@ -189,12 +189,12 @@ export default function IngresoScreen() {
                 <thead className="border-b">
                   <tr>
                     <th className="p-2 text-left border-r border-gray-300">
-                      NOMBRE
-                    </th>
-                    <th className="p-2 text-left">VALOR</th>
-                    <th className="p-2 text-left border-r border-gray-300">
                       FECHA
                     </th>
+
+                    <th className="p-2 text-left">DESCRIPCIÓN</th>
+                    <th className="p-2 text-left">VALOR</th>
+
                     <th className="p-2 text-left">ACCIONES</th>
                   </tr>
                 </thead>
@@ -202,13 +202,19 @@ export default function IngresoScreen() {
                   {products.map((product) => (
                     <tr key={product._id} className="border-b">
                       <td className=" p-2 border-r border-gray-300">
+                        {product.date.substring(0, 10)}
+                      </td>
+
+                      <td className=" p-2 ">
+                        <span className="font-semibold">
+                          {product.typeOfPurchase}
+                        </span>
+
+                        <br />
                         {product.name}
                       </td>
                       <td className=" p-2 ">
                         ${formatNumberWithDots(product.value)}
-                      </td>
-                      <td className=" p-2 border-r border-gray-300">
-                        {product.date.substring(0, 10)}
                       </td>
 
                       <td className=" p-5 text-center flex flex-col lg:flex-row">

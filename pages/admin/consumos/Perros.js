@@ -190,15 +190,12 @@ export default function PerrosScreen() {
                 <thead className="border-b">
                   <tr>
                     <th className="p-2 text-left border-r border-gray-300">
-                      NOMBRE
-                    </th>
-                    <th className="p-2 text-left">TIENDA</th>
-                    <th className="p-2 text-left">VALOR</th>
-                    <th className="p-2 text-left">MEDIO DE PAGO</th>
-
-                    <th className="p-2 text-left border-r border-gray-300">
                       FECHA
                     </th>
+
+                    <th className="p-2 text-left">DESCRIPCIÓN</th>
+                    <th className="p-2 text-left">VALOR</th>
+
                     <th className="p-2 text-left">ACCIONES</th>
                   </tr>
                 </thead>
@@ -206,15 +203,19 @@ export default function PerrosScreen() {
                   {products.map((product) => (
                     <tr key={product._id} className="border-b">
                       <td className=" p-2 border-r border-gray-300">
+                        {product.date.substring(0, 10)}
+                      </td>
+
+                      <td className=" p-2 ">
+                        <span className="font-semibold">
+                          {product.typeOfPurchase}
+                        </span>
+
+                        <br />
                         {product.name}
                       </td>
-                      <td className=" p-2 ">{product.store}</td>
                       <td className=" p-2 ">
                         ${formatNumberWithDots(product.value)}
-                      </td>
-                      <td className=" p-2 ">{product.paymentType}</td>
-                      <td className=" p-2 border-r border-gray-300">
-                        {product.date.substring(0, 10)}
                       </td>
 
                       <td className=" p-5 text-center flex flex-col lg:flex-row">
