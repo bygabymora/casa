@@ -34,13 +34,12 @@ const postHandler = async (req, res) => {
   const newDate = new Date(Date.now() - fiveHoursInMilliseconds);
   console.log('New date: ', newDate);
   const newProduct = new Product({
-    name: 'N/A',
+    name: ' ',
     slug: newSlug,
-    store: '.',
-    value: 0,
+    store: ' ',
     paymentType: 'TC Master',
     typeOfPurchase: '.',
-    notes: 'Nada',
+    notes: ' ',
     date: newDate,
   });
 

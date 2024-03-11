@@ -260,6 +260,34 @@ export default function AdminProductEditScreen() {
                 .toUpperCase()}`}</h1>
               <div className="grid grid-cols-2">
                 <div className="mb-4">
+                  <label htmlFor="value">Valor</label>
+                  <input
+                    type="number"
+                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    id="value"
+                    {...register('value', {
+                      required: 'Por favor ingrese un valor',
+                    })}
+                  />
+                  {errors.value && (
+                    <div className="text-red-500">{errors.value.message}</div>
+                  )}
+                  {maxAmount > 0 && remaining >= 0 && (
+                    <div className="text-green-700">
+                      Valor Máximo a gastar: ${formatNumberWithDots(maxAmount)}
+                      <br />
+                      Restante: ${formatNumberWithDots(remaining)}
+                    </div>
+                  )}
+                  {maxAmount > 0 && remaining < 0 && (
+                    <div className="text-red-700">
+                      Valor Máximo a gastar: ${formatNumberWithDots(maxAmount)}
+                      <br />
+                      Restante: ${formatNumberWithDots(remaining)}
+                    </div>
+                  )}
+                </div>
+                <div className="mb-4">
                   <label htmlFor="typeOfPurchase">Tipo de Compra</label>
                   <select
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -275,6 +303,12 @@ export default function AdminProductEditScreen() {
                       <option value="Salario GM">Salario GM</option>
                       <option value="Otro ingreso">Otro Ingreso</option>
                     </optgroup>
+                    <optgroup label="Categoría Ocio">
+                      <option value="Ocio General">Ocio General</option>
+                      <option value="Viajes">Viajes</option>
+                      <option value="Cumpleaños">Cumpleaños</option>
+                      <option value="Comidas afuera">Comidas afuera</option>
+                    </optgroup>
                     <optgroup label="Categoría Casa">
                       <option value="Comida y aseo">Comida y aseo</option>
                       <option value="Extras Casa">Extras Casa</option>
@@ -286,6 +320,19 @@ export default function AdminProductEditScreen() {
                       <option value="Clases Pollos">Clases Pollos</option>
                       <option value="Arriendo Casa">Arriendo Casa</option>
                       <option value="Administración">Administración</option>
+                    </optgroup>
+                    <optgroup label="Categoría Carro">
+                      <option value="Gasolina">Gasolina</option>
+                      <option value="Mantenimiento">Mantenimiento</option>
+                      <option value="Lavado">Lavado</option>
+                      <option value="Parqueadero">Parqueadero</option>
+                      <option value="Peajes">Peajes</option>
+                      <option value="Papeles">Papeles</option>
+                    </optgroup>
+
+                    <optgroup label="Categoría Ropa">
+                      <option value="Ropa Pollos">Ropa Pollos</option>
+                      <option value="Ropa Papás">Ropa Papás</option>
                     </optgroup>
 
                     <optgroup label="Categoría Servicios Públicos">
@@ -301,37 +348,10 @@ export default function AdminProductEditScreen() {
                       <option value="YouTube">YouTube</option>
                     </optgroup>
 
-                    <optgroup label="Categoría Carro">
-                      <option value="Gasolina">Gasolina</option>
-                      <option value="Mantenimiento">Mantenimiento</option>
-                      <option value="Lavado">Lavado</option>
-                      <option value="Parqueadero">Parqueadero</option>
-                      <option value="Peajes">Peajes</option>
-                      <option value="Papeles">Papeles</option>
-                    </optgroup>
-
-                    <optgroup label="Categoría Ocio">
-                      <option value="Ocio General">Ocio General</option>
-                      <option value="Viajes">Viajes</option>
-                      <option value="Cumpleaños">Cumpleaños</option>
-                      <option value="Comidas afuera">Comidas afuera</option>
-                    </optgroup>
-
-                    <optgroup label="Categoría Ropa">
-                      <option value="Ropa Pollos">Ropa Pollos</option>
-                      <option value="Ropa Papás">Ropa Papás</option>
-                    </optgroup>
-
                     <optgroup label="Categoría Perros">
                       <option value="Comida Perros">Comida Perros</option>
                       <option value="Guardería Perros">Guardería Perros</option>
                       <option value="Medicina Perros">Medicina Perros</option>
-                    </optgroup>
-
-                    <optgroup label="Categoría Extracurriculares">
-                      <option value="Clases y Extracurriculares">
-                        Clases y Extracurriculares
-                      </option>
                     </optgroup>
 
                     <optgroup label="Categoría Ob. financieras">
@@ -355,22 +375,7 @@ export default function AdminProductEditScreen() {
                     </div>
                   )}
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="date">Fecha</label>
-                  <input
-                    type="date"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="date"
-                    {...register('date', {
-                      required: 'Por favor ingrese una fecha',
-                    })}
-                  />
-                  {errors.date && (
-                    <div className="text-red-500">{errors.date.message}</div>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-2">
+
                 <div className="mb-4">
                   <label htmlFor="name">Descripción</label>
                   <input
@@ -401,36 +406,7 @@ export default function AdminProductEditScreen() {
                     <div className="text-red-500">{errors.store.message}</div>
                   )}
                 </div>
-              </div>
-              <div className="grid grid-cols-2">
-                <div className="mb-4">
-                  <label htmlFor="value">Valor</label>
-                  <input
-                    type="number"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="value"
-                    {...register('value', {
-                      required: 'Por favor ingrese un valor',
-                    })}
-                  />
-                  {errors.value && (
-                    <div className="text-red-500">{errors.value.message}</div>
-                  )}
-                  {maxAmount > 0 && remaining >= 0 && (
-                    <div className="text-green-700">
-                      Valor Máximo a gastar: ${formatNumberWithDots(maxAmount)}
-                      <br />
-                      Restante: ${formatNumberWithDots(remaining)}
-                    </div>
-                  )}
-                  {maxAmount > 0 && remaining < 0 && (
-                    <div className="text-red-700">
-                      Valor Máximo a gastar: ${formatNumberWithDots(maxAmount)}
-                      <br />
-                      Restante: ${formatNumberWithDots(remaining)}
-                    </div>
-                  )}
-                </div>
+
                 <div className="mb-4">
                   <label htmlFor="paymentType">Sistema de Registro</label>
                   <select
@@ -452,8 +428,21 @@ export default function AdminProductEditScreen() {
                     </div>
                   )}
                 </div>
+                <div className="mb-4">
+                  <label htmlFor="date">Fecha</label>
+                  <input
+                    type="date"
+                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    id="date"
+                    {...register('date', {
+                      required: 'Por favor ingrese una fecha',
+                    })}
+                  />
+                  {errors.date && (
+                    <div className="text-red-500">{errors.date.message}</div>
+                  )}
+                </div>
               </div>
-
               <div className="flex flex-row">
                 <div className="mb-4">
                   <button
