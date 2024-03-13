@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../../components/Layout';
 import { BsSpeedometer } from 'react-icons/bs';
+import Descarga from '../../components/DescargaTCM';
 
 export default function Consumos() {
   const [consumos, setConsumos] = useState([]);
@@ -146,6 +147,9 @@ export default function Consumos() {
     return { mainCategory, totalSum };
   });
 
+  const selectedMonth = fecha.getMonth() + 1; // JavaScript months are 0-indexed
+  const selectedYear = fecha.getFullYear();
+
   return (
     <Layout>
       <div className="grid md:grid-cols-4 md:gap-2 mb-5">
@@ -176,6 +180,9 @@ export default function Consumos() {
               value={fechaPlusOneMonth.toISOString().substring(0, 7)}
               onChange={handleDateChange}
             />
+          </div>
+          <div>
+            <Descarga month={selectedMonth} year={selectedYear} />
           </div>
           <div>
             <h1 className="text-2xl font-bold border-b border-gray-300">

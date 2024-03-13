@@ -19,6 +19,7 @@
     "emailjs-com": "^3.2.0",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.10",
+    "exceljs": "^4.4.0",
     "js-cookie": "^3.0.5",
     "mercadopago": "^1.5.17",
     "mongodb": "^5.7.0",
