@@ -26,7 +26,19 @@ export default function Layout({ title, children }) {
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/favicon-16x16.png"
+          href="/images/favicon_package_v0.16/favicon-16x16.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="/images/favicon_package_v0.16/android-chrome-192x192.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="512x512"
+          href="/images/favicon_package_v0.16/android-chrome-512x512.png"
         />
         <link
           rel="manifest"
