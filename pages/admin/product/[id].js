@@ -56,6 +56,7 @@ export default function AdminProductEditScreen() {
   const [totalSpent, setTotalSpent] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
   const [formattedProductValue, setFormattedProductValue] = useState('');
+  const [onFocus, setOnFocus] = useState(false);
 
   const typeOfPurchase = watch('typeOfPurchase');
   const fetchTotalSpent = async (typeOfPurchase) => {
@@ -232,23 +233,23 @@ export default function AdminProductEditScreen() {
       toast.error(getError(err));
     }
   };
+
+  const productValue = watch('productValue');
+
   useEffect(() => {
     const formatNumberWithDots = (number) => {
-      const cleanNumber = number.replace(/\./g, '');
-
+      if (!number) return '';
+      const cleanNumber = number.toString().replace(/\D/g, ''); // Elimina todo lo que no sea dígito
       return cleanNumber.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
 
     const currentProductValue = watch('productValue');
-
-    if (currentProductValue !== undefined) {
-      const formattedValue = formatNumberWithDots(
-        currentProductValue.toString()
-      );
-      setFormattedProductValue(formattedValue);
+    if (currentProductValue !== undefined && currentProductValue !== '') {
+      const formatted = formatNumberWithDots(currentProductValue);
+      console.log('Valor formateado:', formatted); // Verifica el valor formateado en la consola
+      setFormattedProductValue(formatted);
     }
-  }, [watch('productValue')]);
-  const productValue = watch('productValue');
+  }, [watch, onFocus]);
 
   return (
     <Layout title={`Edit Product ${productId}`}>
@@ -289,27 +290,30 @@ export default function AdminProductEditScreen() {
                   <label htmlFor="value">Valor</label>
                   <div>
                     <input
-                      type="text" // Cambiado de number a text para permitir puntos
+                      type="number"
+                      onFocus={() => setOnFocus(true)}
+                      onBlur={() => setOnFocus(false)}
                       className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                       id="productValue"
                       {...register('productValue', {
                         required: 'Por favor ingrese un valor',
                       })}
                       onChange={(e) => {
-                        setValue(
-                          'productValue',
-                          e.target.value.replace(/\./g, '')
-                        );
+                        const value = e.target.value;
+                        setValue('productValue', value);
+
+                        setFormattedProductValue(formatNumberWithDots(value));
                       }}
                     />
+
                     {errors.productValue && (
                       <div className="text-red-500">
                         {errors.productValue.message}
                       </div>
                     )}
-                    {productValue !== '' && (
-                      <div className="text-gray-600">
-                        ${formattedProductValue}
+                    {onFocus && productValue && (
+                      <div className="text-gray-600 mt-2">
+                        Valor formateado: ${formatNumberWithDots(productValue)}
                       </div>
                     )}
                   </div>
@@ -335,6 +339,7 @@ export default function AdminProductEditScreen() {
                 <div className="mb-4">
                   <label htmlFor="typeOfPurchase">Tipo de Compra</label>
                   <select
+                    onFocus={() => setOnFocus(false)}
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="typeOfPurchase"
                     value={typeOfPurchase}
