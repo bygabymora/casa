@@ -151,16 +151,22 @@ export default function AdminProductEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-
         const { data } = await axios.get(`/api/admin/products/${productId}`);
         dispatch({ type: 'FETCH_SUCCESS' });
+
         setValue('name', data.name);
         setValue('slug', data.slug);
         setValue('store', data.store);
-        setValue('value', data.value);
+
+        if (data.value && data.value !== 0) {
+          setValue('value', data.value);
+        } else {
+          setValue('value', '');
+        }
         setValue('paymentType', data.paymentType);
         setValue('typeOfPurchase', data.typeOfPurchase);
         setValue('notes', data.notes);
+
         let dateValue = data.date;
         if (typeof dateValue === 'string') {
           dateValue = new Date(dateValue);
