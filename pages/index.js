@@ -179,7 +179,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Layout title="Home Page">
+    <Layout title="CASA">
       <div className="grid grid-cols-3 items-center justify-items-center mt-3">
         <button
           disabled={loadingCreate}
