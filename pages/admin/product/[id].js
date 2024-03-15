@@ -55,6 +55,8 @@ export default function AdminProductEditScreen() {
 
   const [totalSpent, setTotalSpent] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
+  const [formattedProductValue, setFormattedProductValue] = useState('');
+
   const typeOfPurchase = watch('typeOfPurchase');
   const fetchTotalSpent = async (typeOfPurchase) => {
     try {
@@ -159,10 +161,11 @@ export default function AdminProductEditScreen() {
         setValue('store', data.store);
 
         if (data.value && data.value !== 0) {
-          setValue('value', data.value);
+          setValue('productValue', data.value);
         } else {
-          setValue('value', '');
+          setValue('productValue', '');
         }
+
         setValue('paymentType', data.paymentType);
         setValue('typeOfPurchase', data.typeOfPurchase);
         setValue('notes', data.notes);
@@ -198,7 +201,7 @@ export default function AdminProductEditScreen() {
     name,
     slug,
     store,
-    value,
+    productValue,
     paymentType,
     typeOfPurchase: typeOf,
     notes,
@@ -215,7 +218,7 @@ export default function AdminProductEditScreen() {
         name,
         slug,
         store,
-        value,
+        value: productValue,
         paymentType,
         typeOfPurchase: typeOf,
         notes,
@@ -229,6 +232,23 @@ export default function AdminProductEditScreen() {
       toast.error(getError(err));
     }
   };
+  useEffect(() => {
+    const formatNumberWithDots = (number) => {
+      const cleanNumber = number.replace(/\./g, '');
+
+      return cleanNumber.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
+    const currentProductValue = watch('productValue');
+
+    if (currentProductValue !== undefined) {
+      const formattedValue = formatNumberWithDots(
+        currentProductValue.toString()
+      );
+      setFormattedProductValue(formattedValue);
+    }
+  }, [watch('productValue')]);
+  const productValue = watch('productValue');
 
   return (
     <Layout title={`Edit Product ${productId}`}>
@@ -267,15 +287,33 @@ export default function AdminProductEditScreen() {
               <div className="grid grid-cols-2">
                 <div className="mb-4">
                   <label htmlFor="value">Valor</label>
-                  <input
-                    autoFocus
-                    type="number"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="value"
-                    {...register('value', {
-                      required: 'Por favor ingrese un valor',
-                    })}
-                  />
+                  <div>
+                    <input
+                      type="text" // Cambiado de number a text para permitir puntos
+                      className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                      id="productValue"
+                      {...register('productValue', {
+                        required: 'Por favor ingrese un valor',
+                      })}
+                      onChange={(e) => {
+                        setValue(
+                          'productValue',
+                          e.target.value.replace(/\./g, '')
+                        );
+                      }}
+                    />
+                    {errors.productValue && (
+                      <div className="text-red-500">
+                        {errors.productValue.message}
+                      </div>
+                    )}
+                    {productValue !== '' && (
+                      <div className="text-gray-600">
+                        ${formattedProductValue}
+                      </div>
+                    )}
+                  </div>
+
                   {errors.value && (
                     <div className="text-red-500">{errors.value.message}</div>
                   )}
