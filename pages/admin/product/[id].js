@@ -55,7 +55,7 @@ export default function AdminProductEditScreen() {
 
   const [totalSpent, setTotalSpent] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
-  const [formattedProductValue, setFormattedProductValue] = useState('');
+
   const [onFocus, setOnFocus] = useState(false);
 
   const typeOfPurchase = watch('typeOfPurchase');
@@ -236,21 +236,6 @@ export default function AdminProductEditScreen() {
 
   const productValue = watch('productValue');
 
-  useEffect(() => {
-    const formatNumberWithDots = (number) => {
-      if (!number) return '';
-      const cleanNumber = number.toString().replace(/\D/g, ''); // Elimina todo lo que no sea dígito
-      return cleanNumber.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    };
-
-    const currentProductValue = watch('productValue');
-    if (currentProductValue !== undefined && currentProductValue !== '') {
-      const formatted = formatNumberWithDots(currentProductValue);
-      console.log('Valor formateado:', formatted); // Verifica el valor formateado en la consola
-      setFormattedProductValue(formatted);
-    }
-  }, [watch, onFocus]);
-
   return (
     <Layout title={`Edit Product ${productId}`}>
       <div className="grid md:grid-cols-4 md:gap-5">
@@ -301,8 +286,6 @@ export default function AdminProductEditScreen() {
                       onChange={(e) => {
                         const value = e.target.value;
                         setValue('productValue', value);
-
-                        setFormattedProductValue(formatNumberWithDots(value));
                       }}
                     />
 
