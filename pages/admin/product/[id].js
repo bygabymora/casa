@@ -284,6 +284,7 @@ export default function AdminProductEditScreen() {
                         required: 'Por favor ingrese un valor',
                       })}
                       onChange={(e) => {
+                        e.preventDefault();
                         const value = e.target.value;
                         setValue('productValue', value);
                       }}
