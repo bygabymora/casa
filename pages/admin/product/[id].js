@@ -276,7 +276,9 @@ export default function AdminProductEditScreen() {
                   <div>
                     <input
                       type="number"
-                      onFocus={() => setOnFocus(true)}
+                      onFocus={(e) => {
+                        setOnFocus(true), e.preventDefault();
+                      }}
                       onBlur={() => setOnFocus(false)}
                       className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                       id="productValue"
@@ -413,6 +415,9 @@ export default function AdminProductEditScreen() {
                 <div className="mb-4">
                   <label htmlFor="name">Descripción</label>
                   <input
+                    onFocus={(e) => {
+                      e.preventDefault();
+                    }}
                     type="text"
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="name"
@@ -428,6 +433,9 @@ export default function AdminProductEditScreen() {
                 <div className="mb-4">
                   <label htmlFor="store">Tienda</label>
                   <input
+                    onFocus={(e) => {
+                      e.preventDefault();
+                    }}
                     type="text"
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="store"
