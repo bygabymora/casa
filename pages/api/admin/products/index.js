@@ -19,7 +19,7 @@ const postHandler = async (req, res) => {
   await db.connect();
   // Find the latest product
   const lastProduct = await Product.findOne({}).sort({ _id: -1 });
-  let newSlugNumber = 1; // Default if no products are found
+  let newSlugNumber = 1;
 
   if (lastProduct && lastProduct.slug) {
     const lastSlugNumber = parseInt(lastProduct.slug.match(/\d+$/), 10);
