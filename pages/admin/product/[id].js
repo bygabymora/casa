@@ -55,6 +55,9 @@ export default function AdminProductEditScreen() {
 
   const [totalSpent, setTotalSpent] = useState(0);
   const [maxAmount, setMaxAmount] = useState(0);
+
+  const [onFocus, setOnFocus] = useState(false);
+
   const typeOfPurchase = watch('typeOfPurchase');
   const fetchTotalSpent = async (typeOfPurchase) => {
     try {
@@ -159,10 +162,11 @@ export default function AdminProductEditScreen() {
         setValue('store', data.store);
 
         if (data.value && data.value !== 0) {
-          setValue('value', data.value);
+          setValue('productValue', data.value);
         } else {
-          setValue('value', '');
+          setValue('productValue', '');
         }
+
         setValue('paymentType', data.paymentType);
         setValue('typeOfPurchase', data.typeOfPurchase);
         setValue('notes', data.notes);
@@ -198,7 +202,7 @@ export default function AdminProductEditScreen() {
     name,
     slug,
     store,
-    value,
+    productValue,
     paymentType,
     typeOfPurchase: typeOf,
     notes,
@@ -215,7 +219,7 @@ export default function AdminProductEditScreen() {
         name,
         slug,
         store,
-        value,
+        value: productValue,
         paymentType,
         typeOfPurchase: typeOf,
         notes,
@@ -229,6 +233,8 @@ export default function AdminProductEditScreen() {
       toast.error(getError(err));
     }
   };
+
+  const productValue = watch('productValue');
 
   return (
     <Layout title={`Edit Product ${productId}`}>
@@ -267,15 +273,37 @@ export default function AdminProductEditScreen() {
               <div className="grid grid-cols-2">
                 <div className="mb-4">
                   <label htmlFor="value">Valor</label>
-                  <input
-                    autoFocus
-                    type="number"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="value"
-                    {...register('value', {
-                      required: 'Por favor ingrese un valor',
-                    })}
-                  />
+                  <div>
+                    <input
+                      type="number"
+                      onFocus={(e) => {
+                        setOnFocus(true), e.preventDefault();
+                      }}
+                      onBlur={() => setOnFocus(false)}
+                      className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                      id="productValue"
+                      {...register('productValue', {
+                        required: 'Por favor ingrese un valor',
+                      })}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        const value = e.target.value;
+                        setValue('productValue', value);
+                      }}
+                    />
+
+                    {errors.productValue && (
+                      <div className="text-red-500">
+                        {errors.productValue.message}
+                      </div>
+                    )}
+                    {onFocus && productValue && (
+                      <div className="text-gray-600 mt-2">
+                        Valor formateado: ${formatNumberWithDots(productValue)}
+                      </div>
+                    )}
+                  </div>
+
                   {errors.value && (
                     <div className="text-red-500">{errors.value.message}</div>
                   )}
@@ -297,6 +325,7 @@ export default function AdminProductEditScreen() {
                 <div className="mb-4">
                   <label htmlFor="typeOfPurchase">Tipo de Compra</label>
                   <select
+                    onFocus={() => setOnFocus(false)}
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="typeOfPurchase"
                     value={typeOfPurchase}
@@ -386,6 +415,9 @@ export default function AdminProductEditScreen() {
                 <div className="mb-4">
                   <label htmlFor="name">Descripción</label>
                   <input
+                    onFocus={(e) => {
+                      e.preventDefault();
+                    }}
                     type="text"
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="name"
@@ -401,6 +433,9 @@ export default function AdminProductEditScreen() {
                 <div className="mb-4">
                   <label htmlFor="store">Tienda</label>
                   <input
+                    onFocus={(e) => {
+                      e.preventDefault();
+                    }}
                     type="text"
                     className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="store"
